@@ -62,10 +62,10 @@ export default async function TeamPage() {
                     {/* Hover Overlay */}
                     <div className="team-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '320px', background: 'linear-gradient(to top, rgba(232, 160, 32, 0.9), rgba(232, 160, 32, 0.4))', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '2rem', opacity: 0, transition: 'opacity 0.3s ease' }}>
                       <div style={{ display: 'flex', gap: '1rem' }}>
-                        <button style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FFFFFF', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#E8A020', cursor: 'pointer', transform: 'translateY(20px)', transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }} className="social-btn" style={{ transitionDelay: '0.1s' }}>
+                        <button style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FFFFFF', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#E8A020', cursor: 'pointer', transform: 'translateY(20px)', transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)', transitionDelay: '0.1s' }} className="social-btn">
                           <Linkedin size={18} />
                         </button>
-                        <button style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FFFFFF', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#E8A020', cursor: 'pointer', transform: 'translateY(20px)', transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }} className="social-btn" style={{ transitionDelay: '0.2s' }}>
+                        <button style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FFFFFF', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#E8A020', cursor: 'pointer', transform: 'translateY(20px)', transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)', transitionDelay: '0.2s' }} className="social-btn">
                           <Mail size={18} />
                         </button>
                       </div>
