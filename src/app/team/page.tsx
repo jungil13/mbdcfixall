@@ -24,7 +24,7 @@ export default async function TeamPage() {
     <main style={{ background: '#F2EFE8', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
       
-      <div style={{ flex: 1, paddingTop: '140px', paddingBottom: '7rem', maxWidth: '1280px', margin: '0 auto', width: '100%', paddingLeft: '2rem', paddingRight: '2rem' }}>
+      <div style={{ flex: 1, paddingTop: 'clamp(100px, 14vw, 140px)', paddingBottom: 'clamp(4rem, 8vw, 7rem)', maxWidth: '1280px', margin: '0 auto', width: '100%', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
         <AnimatedSection>
           <div style={{ textAlign: 'center', marginBottom: '5rem', maxWidth: '700px', margin: '0 auto 5rem' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '1.25rem' }}>
@@ -48,11 +48,11 @@ export default async function TeamPage() {
             No team members found.
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '3rem 2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))', gap: 'clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem)' }}>
             {team.map((member, i) => (
               <AnimatedSection key={member.id} delay={(i % 4) * 100}>
                 <div className="team-card" style={{ background: '#FFFFFF', borderRadius: '12px', overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'transform 0.3s ease, box-shadow 0.3s ease', position: 'relative' }}>
-                  <div style={{ width: '100%', height: '320px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: 'clamp(240px, 35vw, 320px)', overflow: 'hidden' }}>
                     {member.image_url ? (
                       <img src={member.image_url} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} />
                     ) : (
@@ -60,7 +60,7 @@ export default async function TeamPage() {
                     )}
                     
                     {/* Hover Overlay */}
-                    <div className="team-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '320px', background: 'linear-gradient(to top, rgba(232, 160, 32, 0.9), rgba(232, 160, 32, 0.4))', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '2rem', opacity: 0, transition: 'opacity 0.3s ease' }}>
+                    <div className="team-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 'clamp(240px, 35vw, 320px)', background: 'linear-gradient(to top, rgba(232, 160, 32, 0.9), rgba(232, 160, 32, 0.4))', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '2rem', opacity: 0, transition: 'opacity 0.3s ease' }}>
                       <div style={{ display: 'flex', gap: '1rem' }}>
                         <button style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#FFFFFF', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#E8A020', cursor: 'pointer', transform: 'translateY(20px)', transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)', transitionDelay: '0.1s' }} className="social-btn">
                           <Linkedin size={18} />
