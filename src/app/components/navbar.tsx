@@ -57,7 +57,7 @@ export function Navbar() {
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
           style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}
         >
-          <img src={logo} alt="logo" style={{ width: "40px", height: "40px" }} />
+          <img src={logo.src} alt="logo" style={{ width: "40px", height: "40px" }} />
           <div>
             <div
               style={{
