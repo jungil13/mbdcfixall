@@ -1,13 +1,23 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
+type AnimationVariant = 'up' | 'left' | 'right' | 'scale'
+
 interface AnimatedSectionProps {
   children: React.ReactNode
   className?: string
   delay?: number
+  variant?: AnimationVariant
 }
 
-export function AnimatedSection({ children, className = '', delay = 0 }: AnimatedSectionProps) {
+const variantClass: Record<AnimationVariant, string> = {
+  up: 'reveal',
+  left: 'reveal-left',
+  right: 'reveal-right',
+  scale: 'reveal-scale',
+}
+
+export function AnimatedSection({ children, className = '', delay = 0, variant = 'up' }: AnimatedSectionProps) {
   const [isVisible, setIsVisible] = useState(false)
   const domRef = useRef<HTMLDivElement>(null)
 
@@ -21,8 +31,8 @@ export function AnimatedSection({ children, className = '', delay = 0 }: Animate
         }
       })
     }, {
-      threshold: 0.1, // Trigger when 10% of the element is visible
-      rootMargin: '0px 0px -50px 0px' // Slightly trigger before it's fully in view
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
     })
 
     const currentRef = domRef.current
@@ -35,10 +45,12 @@ export function AnimatedSection({ children, className = '', delay = 0 }: Animate
     }
   }, [])
 
+  const base = variantClass[variant]
+
   return (
     <div
       ref={domRef}
-      className={`reveal ${isVisible ? 'active' : ''} ${className}`}
+      className={`${base} ${isVisible ? 'active' : ''} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}

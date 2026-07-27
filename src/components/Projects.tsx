@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { AnimatedSection } from './AnimatedSection'
 
 const categories = ['All', 'Residential', 'Commercial', 'Infrastructure']
 
@@ -58,98 +59,107 @@ const projects = [
 export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
   const [active, setActive] = useState('All')
 
-  // Use dynamic projects if provided, otherwise fallback to the hardcoded array
   const currentProjects = dynamicProjects && dynamicProjects.length > 0 ? dynamicProjects : projects
-
-  // Extract unique categories from whatever project list we are using
   const uniqueCategories = ['All', ...Array.from(new Set(currentProjects.map(p => p.category)))]
-
   const filtered = active === 'All' ? currentProjects : currentProjects.filter((p) => p.category === active)
 
   return (
     <section
       id="projects"
+      className="section-padded"
       style={{
         background: '#F7F4EE',
-        padding: '7rem 2rem',
+        padding: '7rem 1.25rem',
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            marginBottom: '3rem',
-            flexWrap: 'wrap',
-            gap: '2rem',
-          }}
-        >
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                marginBottom: '1.25rem',
-              }}
-            >
-              <div style={{ width: '32px', height: '2px', background: '#E8A020' }} />
-              <span
+        <AnimatedSection>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginBottom: '2.5rem',
+              flexWrap: 'wrap',
+              gap: '1.5rem',
+            }}
+          >
+            <div>
+              <div
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: '12px',
-                  letterSpacing: '0.18em',
-                  color: '#E8A020',
-                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  marginBottom: '1.25rem',
                 }}
               >
-                PORTFOLIO
-              </span>
-            </div>
-            <h2
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 800,
-                fontSize: 'clamp(36px, 4vw, 54px)',
-                lineHeight: 1.05,
-                color: '#111111',
-                textTransform: 'uppercase',
-                margin: 0,
-              }}
-            >
-              FEATURED
-              <br />
-              <span style={{ color: '#E8A020' }}>PROJECTS</span>
-            </h2>
-          </div>
-
-          {/* Filter tabs */}
-          <div style={{ display: 'flex', gap: '2px', background: '#D8D4CC' }}>
-            {uniqueCategories.map((cat) => (
-              <button
-                key={cat}
-                id={`projects-filter-${cat.toLowerCase()}`}
-                onClick={() => setActive(cat)}
+                <div style={{ width: '32px', height: '2px', background: '#E8A020' }} />
+                <span
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '12px',
+                    letterSpacing: '0.18em',
+                    color: '#E8A020',
+                    fontWeight: 500,
+                  }}
+                >
+                  PORTFOLIO
+                </span>
+              </div>
+              <h2
                 style={{
                   fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 700,
-                  fontSize: '13px',
-                  letterSpacing: '0.1em',
-                  padding: '12px 22px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'background 0.2s, color 0.2s',
-                  background: active === cat ? '#E8A020' : '#FFFFFF',
-                  color: active === cat ? '#111111' : '#6B6B6B',
+                  fontWeight: 800,
+                  fontSize: 'clamp(30px, 4vw, 54px)',
+                  lineHeight: 1.05,
+                  color: '#111111',
+                  textTransform: 'uppercase',
+                  margin: 0,
                 }}
               >
-                {cat.toUpperCase()}
-              </button>
-            ))}
+                FEATURED
+                <br />
+                <span style={{ color: '#E8A020' }}>PROJECTS</span>
+              </h2>
+            </div>
+
+            {/* Filter tabs */}
+            <div
+              className="projects-filter-wrap"
+              style={{
+                display: 'flex',
+                gap: '2px',
+                background: '#D8D4CC',
+                overflowX: 'auto',
+                WebkitOverflowScrolling: 'touch' as any,
+              }}
+            >
+              {uniqueCategories.map((cat) => (
+                <button
+                  key={cat}
+                  id={`projects-filter-${cat.toLowerCase()}`}
+                  onClick={() => setActive(cat)}
+                  style={{
+                    fontFamily: "'Barlow Condensed', sans-serif",
+                    fontWeight: 700,
+                    fontSize: 'clamp(11px, 2vw, 13px)',
+                    letterSpacing: '0.1em',
+                    padding: '11px 18px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, color 0.2s',
+                    background: active === cat ? '#E8A020' : '#FFFFFF',
+                    color: active === cat ? '#111111' : '#6B6B6B',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {cat.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        </AnimatedSection>
 
         {/* Projects grid */}
         <div
@@ -161,147 +171,149 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
           }}
           className="projects-grid"
         >
-          {filtered.map((project) => (
-            <div
-              key={project.title}
-              style={{
-                background: '#FFFFFF',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                position: 'relative',
-              }}
-              onMouseEnter={(e) => {
-                const img = e.currentTarget.querySelector('img') as HTMLImageElement
-                if (img) img.style.transform = 'scale(1.05)'
-                const overlay = e.currentTarget.querySelector('.proj-overlay') as HTMLElement
-                if (overlay) overlay.style.opacity = '1'
-              }}
-              onMouseLeave={(e) => {
-                const img = e.currentTarget.querySelector('img') as HTMLImageElement
-                if (img) img.style.transform = 'scale(1)'
-                const overlay = e.currentTarget.querySelector('.proj-overlay') as HTMLElement
-                if (overlay) overlay.style.opacity = '0'
-              }}
-            >
-              <div style={{ position: 'relative', overflow: 'hidden', height: '240px' }}>
-                <img
-                  src={project.image_url || project.image}
-                  alt={project.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    transition: 'transform 0.4s ease',
-                    display: 'block',
-                  }}
-                />
-                {/* Category badge */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '1rem',
-                    left: '1rem',
-                    background: '#E8A020',
-                    padding: '4px 10px',
-                  }}
-                >
-                  <span
+          {filtered.map((project, i) => (
+            <AnimatedSection key={project.title} delay={(i % 3) * 100} variant="up">
+              <div
+                style={{
+                  background: '#FFFFFF',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  height: '100%',
+                }}
+                onMouseEnter={(e) => {
+                  const img = e.currentTarget.querySelector('img') as HTMLImageElement
+                  if (img) img.style.transform = 'scale(1.05)'
+                  const overlay = e.currentTarget.querySelector('.proj-overlay') as HTMLElement
+                  if (overlay) overlay.style.opacity = '1'
+                }}
+                onMouseLeave={(e) => {
+                  const img = e.currentTarget.querySelector('img') as HTMLImageElement
+                  if (img) img.style.transform = 'scale(1)'
+                  const overlay = e.currentTarget.querySelector('.proj-overlay') as HTMLElement
+                  if (overlay) overlay.style.opacity = '0'
+                }}
+              >
+                <div style={{ position: 'relative', overflow: 'hidden', height: 'clamp(180px, 22vw, 240px)' }}>
+                  <img
+                    src={project.image_url || project.image}
+                    alt={project.title}
                     style={{
-                      fontFamily: "'Barlow Condensed', sans-serif",
-                      fontWeight: 700,
-                      fontSize: '11px',
-                      letterSpacing: '0.1em',
-                      color: '#111111',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      transition: 'transform 0.4s ease',
+                      display: 'block',
                     }}
-                  >
-                    {project.category.toUpperCase()}
-                  </span>
-                </div>
-                {/* Hover overlay */}
-                <div
-                  className="proj-overlay"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(232, 160, 32, 0.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: 0,
-                    transition: 'opacity 0.3s',
-                  }}
-                >
+                  />
+                  {/* Category badge */}
                   <div
                     style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      left: '1rem',
                       background: '#E8A020',
-                      width: '48px',
-                      height: '48px',
+                      padding: '4px 10px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'Barlow Condensed', sans-serif",
+                        fontWeight: 700,
+                        fontSize: '11px',
+                        letterSpacing: '0.1em',
+                        color: '#111111',
+                      }}
+                    >
+                      {project.category.toUpperCase()}
+                    </span>
+                  </div>
+                  {/* Hover overlay */}
+                  <div
+                    className="proj-overlay"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'rgba(232, 160, 32, 0.15)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      opacity: 0,
+                      transition: 'opacity 0.3s',
                     }}
                   >
-                    <ArrowRight size={20} color="#111111" />
+                    <div
+                      style={{
+                        background: '#E8A020',
+                        width: '48px',
+                        height: '48px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <ArrowRight size={20} color="#111111" />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div style={{ padding: '1.5rem' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '0.5rem',
-                  }}
-                >
-                  <span
+                <div style={{ padding: 'clamp(1rem, 3vw, 1.5rem)' }}>
+                  <div
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: '12px',
-                      color: '#6B6B6B',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '0.5rem',
                     }}
                   >
-                    {project.location}
-                  </span>
-                  <span
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '12px',
+                        color: '#6B6B6B',
+                      }}
+                    >
+                      {project.location}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "'Barlow Condensed', sans-serif",
+                        fontWeight: 700,
+                        fontSize: '14px',
+                        color: '#E8A020',
+                      }}
+                    >
+                      {project.year}
+                    </span>
+                  </div>
+                  <h3
                     style={{
                       fontFamily: "'Barlow Condensed', sans-serif",
                       fontWeight: 700,
-                      fontSize: '14px',
-                      color: '#E8A020',
+                      fontSize: 'clamp(16px, 2.5vw, 20px)',
+                      color: '#111111',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.03em',
+                      margin: '0 0 0.5rem',
                     }}
                   >
-                    {project.year}
-                  </span>
+                    {project.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '13px',
+                      color: '#6B6B6B',
+                      lineHeight: 1.6,
+                      margin: 0,
+                      fontWeight: 300,
+                    }}
+                  >
+                    {project.description}
+                  </p>
                 </div>
-                <h3
-                  style={{
-                    fontFamily: "'Barlow Condensed', sans-serif",
-                    fontWeight: 700,
-                    fontSize: '20px',
-                    color: '#111111',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.03em',
-                    margin: '0 0 0.5rem',
-                  }}
-                >
-                  {project.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: '13px',
-                    color: '#6B6B6B',
-                    lineHeight: 1.6,
-                    margin: 0,
-                    fontWeight: 300,
-                  }}
-                >
-                  {project.description}
-                </p>
               </div>
-            </div>
+            </AnimatedSection>
           ))}
         </div>
       </div>

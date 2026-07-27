@@ -33,29 +33,34 @@ export function Navbar() {
     setLoading(false)
   }, [pathname])
 
+  // Prevent body scroll when mobile menu open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     setMenuOpen(false)
 
-    // If it's a hash link (section scroll)
     if (href.startsWith('#')) {
       if (isHomePage) {
-        // On home page — just scroll
         const el = document.querySelector(href)
         if (el) el.scrollIntoView({ behavior: 'smooth' })
       } else {
-        // On another page — navigate home first then scroll
         setLoading(true)
         router.push(`/${href}`)
       }
     } else {
-      // Regular page navigation
       setLoading(true)
       router.push(href)
     }
   }
 
-  // Show transparent on home page hero, solid otherwise
   const isSolid = scrolled || !isHomePage
 
   return (
@@ -83,11 +88,11 @@ export function Navbar() {
           style={{
             maxWidth: '1280px',
             margin: '0 auto',
-            padding: '0 2rem',
+            padding: '0 1.25rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            height: '72px',
+            height: '68px',
           }}
         >
           {/* Logo */}
@@ -96,7 +101,7 @@ export function Navbar() {
             onClick={() => setMenuOpen(false)}
             style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
           >
-            <img src="/mightyb_logo.png" alt="MightyBee logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
+            <img src="/mightyb_logo.png" alt="MightyBee logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
             <div>
               <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '18px', letterSpacing: '0.05em', color: '#FFFFFF', lineHeight: 1 }}>
                 MIGHTYBEE
@@ -144,7 +149,7 @@ export function Navbar() {
           </nav>
 
           {/* CTA + Mobile toggle */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <a
               href="tel:0323422202"
               className="navbar-phone"
@@ -163,9 +168,10 @@ export function Navbar() {
                 letterSpacing: '0.12em',
                 background: '#E8A020',
                 color: '#111111',
-                padding: '10px 22px',
+                padding: '10px 20px',
                 textDecoration: 'none',
                 transition: 'background 0.2s',
+                whiteSpace: 'nowrap',
               }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = '#F0B030')}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = '#E8A020')}
@@ -177,26 +183,97 @@ export function Navbar() {
               onClick={() => setMenuOpen(!menuOpen)}
               className="mobile-menu-btn"
               aria-label="Toggle menu"
-              style={{ display: 'none', background: 'none', border: 'none', color: '#FFFFFF', cursor: 'pointer', padding: '4px' }}
+              style={{ display: 'none', background: 'none', border: 'none', color: '#FFFFFF', cursor: 'pointer', padding: '8px', lineHeight: 0 }}
             >
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu — full-screen overlay */}
         {menuOpen && (
-          <div style={{ background: '#111111', padding: '1.5rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-            {navLinks.map((link) => (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              top: '68px',
+              background: '#0D0D0D',
+              zIndex: 99,
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '2.5rem 1.25rem',
+              gap: '0',
+              overflowY: 'auto',
+              animation: 'slideDown 0.25s ease-out',
+            }}
+          >
+            <style>{`
+              @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-12px); }
+                to { opacity: 1; transform: translateY(0); }
+              }
+            `}</style>
+
+            {navLinks.map((link, i) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', letterSpacing: '0.1em', color: '#FFFFFF', textDecoration: 'none' }}
+                style={{
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontWeight: 700,
+                  fontSize: 'clamp(26px, 6vw, 32px)',
+                  letterSpacing: '0.08em',
+                  color: '#FFFFFF',
+                  textDecoration: 'none',
+                  padding: '1rem 0',
+                  borderBottom: '1px solid rgba(255,255,255,0.07)',
+                  transition: 'color 0.2s, padding-left 0.2s',
+                  display: 'block',
+                  animationDelay: `${i * 0.05}s`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#E8A020'
+                  e.currentTarget.style.paddingLeft = '0.5rem'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#FFFFFF'
+                  e.currentTarget.style.paddingLeft = '0'
+                }}
               >
                 {link.label}
               </a>
             ))}
+
+            {/* Mobile contact info */}
+            <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <a
+                href="tel:0323422202"
+                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '15px', color: '#E8A020', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                <Phone size={16} />
+                (032) 342 2202
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, '#contact')}
+                style={{
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  letterSpacing: '0.12em',
+                  background: '#E8A020',
+                  color: '#111111',
+                  padding: '15px',
+                  textDecoration: 'none',
+                  textAlign: 'center',
+                  display: 'block',
+                  marginTop: '0.5rem',
+                }}
+              >
+                GET A FREE QUOTE
+              </a>
+            </div>
           </div>
         )}
       </header>

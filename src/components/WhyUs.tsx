@@ -1,5 +1,6 @@
 'use client'
 import { ShieldCheck, Clock, Award, Users, FileCheck, Banknote } from 'lucide-react'
+import { AnimatedSection } from './AnimatedSection'
 
 const reasons = [
   {
@@ -44,9 +45,10 @@ export function WhyUs() {
   return (
     <section
       id="why-us"
+      className="section-padded"
       style={{
         background: '#111111',
-        padding: '7rem 2rem',
+        padding: '7rem 1.25rem',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -67,43 +69,45 @@ export function WhyUs() {
 
       <div style={{ maxWidth: '1280px', margin: '0 auto', position: 'relative' }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '10px',
-              marginBottom: '1.25rem',
-            }}
-          >
-            <div style={{ width: '32px', height: '2px', background: '#E8A020' }} />
-            <span
+        <AnimatedSection>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <div
               style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: '12px',
-                letterSpacing: '0.18em',
-                color: '#E8A020',
-                fontWeight: 500,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginBottom: '1.25rem',
               }}
             >
-              OUR ADVANTAGE
-            </span>
-            <div style={{ width: '32px', height: '2px', background: '#E8A020' }} />
+              <div style={{ width: '32px', height: '2px', background: '#E8A020' }} />
+              <span
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: '12px',
+                  letterSpacing: '0.18em',
+                  color: '#E8A020',
+                  fontWeight: 500,
+                }}
+              >
+                OUR ADVANTAGE
+              </span>
+              <div style={{ width: '32px', height: '2px', background: '#E8A020' }} />
+            </div>
+            <h2
+              style={{
+                fontFamily: "'Barlow Condensed', sans-serif",
+                fontWeight: 800,
+                fontSize: 'clamp(30px, 4vw, 54px)',
+                lineHeight: 1.05,
+                color: '#FFFFFF',
+                textTransform: 'uppercase',
+                margin: 0,
+              }}
+            >
+              WHY CHOOSE <span style={{ color: '#E8A020' }}>MIGHTYBEE</span>
+            </h2>
           </div>
-          <h2
-            style={{
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontWeight: 800,
-              fontSize: 'clamp(36px, 4vw, 54px)',
-              lineHeight: 1.05,
-              color: '#FFFFFF',
-              textTransform: 'uppercase',
-              margin: 0,
-            }}
-          >
-            WHY CHOOSE <span style={{ color: '#E8A020' }}>MIGHTYBEE</span>
-          </h2>
-        </div>
+        </AnimatedSection>
 
         {/* Reasons grid */}
         <div
@@ -115,67 +119,69 @@ export function WhyUs() {
           }}
           className="why-grid"
         >
-          {reasons.map((reason) => {
+          {reasons.map((reason, i) => {
             const Icon = reason.icon
             return (
-              <div
-                key={reason.title}
-                style={{
-                  background: 'rgba(17,17,17,0.95)',
-                  padding: '2.5rem',
-                  transition: 'background 0.2s',
-                  borderBottom: '3px solid transparent',
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget
-                  el.style.background = 'rgba(30,30,30,0.98)'
-                  el.style.borderBottomColor = '#E8A020'
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget
-                  el.style.background = 'rgba(17,17,17,0.95)'
-                  el.style.borderBottomColor = 'transparent'
-                }}
-              >
+              <AnimatedSection key={reason.title} delay={(i % 3) * 120} variant="up">
                 <div
                   style={{
-                    width: '52px',
-                    height: '52px',
-                    background: '#E8A020',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '1.25rem',
+                    background: 'rgba(17,17,17,0.95)',
+                    padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+                    transition: 'background 0.2s',
+                    borderBottom: '3px solid transparent',
+                    height: '100%',
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget
+                    el.style.background = 'rgba(30,30,30,0.98)'
+                    el.style.borderBottomColor = '#E8A020'
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget
+                    el.style.background = 'rgba(17,17,17,0.95)'
+                    el.style.borderBottomColor = 'transparent'
                   }}
                 >
-                  <Icon size={22} color="#111111" />
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      background: '#E8A020',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1.25rem',
+                    }}
+                  >
+                    <Icon size={22} color="#111111" />
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: "'Barlow Condensed', sans-serif",
+                      fontWeight: 700,
+                      fontSize: 'clamp(16px, 2.5vw, 20px)',
+                      color: '#FFFFFF',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      margin: '0 0 0.75rem',
+                    }}
+                  >
+                    {reason.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 'clamp(12px, 1.5vw, 14px)',
+                      lineHeight: 1.7,
+                      color: 'rgba(255,255,255,0.55)',
+                      margin: 0,
+                      fontWeight: 300,
+                    }}
+                  >
+                    {reason.description}
+                  </p>
                 </div>
-                <h3
-                  style={{
-                    fontFamily: "'Barlow Condensed', sans-serif",
-                    fontWeight: 700,
-                    fontSize: '20px',
-                    color: '#FFFFFF',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    margin: '0 0 0.75rem',
-                  }}
-                >
-                  {reason.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: '14px',
-                    lineHeight: 1.7,
-                    color: 'rgba(255,255,255,0.55)',
-                    margin: 0,
-                    fontWeight: 300,
-                  }}
-                >
-                  {reason.description}
-                </p>
-              </div>
+              </AnimatedSection>
             )
           })}
         </div>

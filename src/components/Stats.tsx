@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { AnimatedSection } from './AnimatedSection'
 
 const stats = [
   { value: 25, suffix: '+', label: 'Years in Business', sublabel: 'Est. 1999' },
@@ -45,7 +46,7 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
         style={{
           fontFamily: "'Barlow Condensed', sans-serif",
           fontWeight: 900,
-          fontSize: '72px',
+          fontSize: 'clamp(48px, 8vw, 72px)',
           color: '#FFFFFF',
           lineHeight: 1,
         }}
@@ -60,10 +61,11 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 export function Stats() {
   return (
     <section
+      className="section-padded"
       style={{
         background: '#111111',
         borderTop: '4px solid #E8A020',
-        padding: '5rem 2rem',
+        padding: '5rem 1.25rem',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -93,52 +95,54 @@ export function Stats() {
         className="stats-grid"
       >
         {stats.map((stat, i) => (
-          <div
-            key={stat.label}
-            style={{
-              background: '#111111',
-              padding: '3rem 2.5rem',
-              textAlign: 'center',
-              position: 'relative',
-            }}
-          >
-            {i < stats.length - 1 && (
+          <AnimatedSection key={stat.label} delay={i * 100} variant="scale">
+            <div
+              style={{
+                background: '#111111',
+                padding: 'clamp(2rem, 5vw, 3rem) clamp(1rem, 4vw, 2.5rem)',
+                textAlign: 'center',
+                position: 'relative',
+                height: '100%',
+              }}
+            >
+              {i < stats.length - 1 && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: '-1px',
+                    top: '20%',
+                    bottom: '20%',
+                    width: '1px',
+                    background: 'rgba(255,255,255,0.08)',
+                  }}
+                />
+              )}
+              <Counter target={stat.value} suffix={stat.suffix} />
               <div
                 style={{
-                  position: 'absolute',
-                  right: '-1px',
-                  top: '20%',
-                  bottom: '20%',
-                  width: '1px',
-                  background: 'rgba(255,255,255,0.08)',
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontWeight: 700,
+                  fontSize: 'clamp(13px, 2vw, 16px)',
+                  color: '#FFFFFF',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginTop: '0.5rem',
                 }}
-              />
-            )}
-            <Counter target={stat.value} suffix={stat.suffix} />
-            <div
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 700,
-                fontSize: '16px',
-                color: '#FFFFFF',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                marginTop: '0.5rem',
-              }}
-            >
-              {stat.label}
+              >
+                {stat.label}
+              </div>
+              <div
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: '12px',
+                  color: 'rgba(255,255,255,0.4)',
+                  marginTop: '4px',
+                }}
+              >
+                {stat.sublabel}
+              </div>
             </div>
-            <div
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: '12px',
-                color: 'rgba(255,255,255,0.4)',
-                marginTop: '4px',
-              }}
-            >
-              {stat.sublabel}
-            </div>
-          </div>
+          </AnimatedSection>
         ))}
       </div>
     </section>
