@@ -42,6 +42,42 @@ export function Hero() {
         }}
       />
 
+      {/* Floating Bubbles Effect */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        <style>{`
+          @keyframes floatBubble {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.4; }
+            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+          }
+          @keyframes floatBubbleSide {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(30px); }
+            100% { transform: translateX(-30px); }
+          }
+          .bubble {
+            position: absolute;
+            bottom: -100px;
+            border-radius: 50%;
+            animation: floatBubble linear infinite, floatBubbleSide ease-in-out infinite alternate;
+          }
+        `}</style>
+        {/* White Bubbles */}
+        <div className="bubble" style={{ left: '10%', width: '40px', height: '40px', background: 'rgba(255,255,255,0.05)', animationDuration: '12s, 4s', animationDelay: '0s, 0s' }} />
+        <div className="bubble" style={{ left: '20%', width: '80px', height: '80px', background: 'rgba(255,255,255,0.02)', animationDuration: '18s, 5s', animationDelay: '2s, 1s' }} />
+        <div className="bubble" style={{ left: '40%', width: '30px', height: '30px', background: 'rgba(255,255,255,0.08)', animationDuration: '10s, 3s', animationDelay: '4s, 2s' }} />
+        <div className="bubble" style={{ left: '70%', width: '60px', height: '60px', background: 'rgba(255,255,255,0.03)', animationDuration: '15s, 4s', animationDelay: '1s, 0s' }} />
+        <div className="bubble" style={{ left: '85%', width: '50px', height: '50px', background: 'rgba(255,255,255,0.04)', animationDuration: '14s, 3.5s', animationDelay: '5s, 1s' }} />
+        
+        {/* Yellow Bubbles */}
+        <div className="bubble" style={{ left: '15%', width: '35px', height: '35px', background: 'rgba(232, 160, 32, 0.1)', animationDuration: '11s, 3.5s', animationDelay: '1s, 0s' }} />
+        <div className="bubble" style={{ left: '35%', width: '55px', height: '55px', background: 'rgba(232, 160, 32, 0.05)', animationDuration: '16s, 4.5s', animationDelay: '3s, 1s' }} />
+        <div className="bubble" style={{ left: '55%', width: '25px', height: '25px', background: 'rgba(232, 160, 32, 0.15)', animationDuration: '9s, 2.5s', animationDelay: '0s, 2s' }} />
+        <div className="bubble" style={{ left: '75%', width: '45px', height: '45px', background: 'rgba(232, 160, 32, 0.08)', animationDuration: '13s, 4s', animationDelay: '4s, 0s' }} />
+        <div className="bubble" style={{ left: '90%', width: '70px', height: '70px', background: 'rgba(232, 160, 32, 0.03)', animationDuration: '17s, 5s', animationDelay: '2s, 1s' }} />
+      </div>
+
       {/* Accent line left */}
       <div
         style={{

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, X, Check } from 'lucide-react'
+import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, X, Check, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { AdminPageLoader } from '@/components/admin/LoadingSpinner'
 
 type Service = {
@@ -22,6 +22,10 @@ export default function ServicesAdminPage() {
   const [isOpen, setIsOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const itemsPerPage = 10
 
   // Form
   const [form, setForm] = useState(emptyForm)
@@ -102,58 +106,143 @@ export default function ServicesAdminPage() {
     fetchServices()
   }
 
-  const inputStyle = { width: '100%', padding: '11px 14px', border: '1px solid #E5E5E5', borderRadius: '6px', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', outline: 'none', background: '#FAFAFA' }
-  const labelStyle = { display: 'block', marginBottom: '6px', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.06em', color: '#555' }
+  const filteredServices = useMemo(() => {
+    return services.filter(s => 
+      s.title.toLowerCase().includes(search.toLowerCase()) || 
+      s.category.toLowerCase().includes(search.toLowerCase())
+    )
+  }, [services, search])
+
+  const totalPages = Math.ceil(filteredServices.length / itemsPerPage)
+  const paginatedServices = filteredServices.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+
+  useEffect(() => { setPage(1) }, [search])
+
+  const inputStyle = { width: '100%', padding: '11px 14px', border: '1px solid #333', borderRadius: '6px', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', outline: 'none', background: '#111', color: '#fff' }
+  const labelStyle = { display: 'block', marginBottom: '6px', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.06em', color: '#888' }
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '38px', color: '#111111', textTransform: 'uppercase', margin: '0 0 4px' }}>Services</h1>
+          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '38px', color: '#fff', textTransform: 'uppercase', margin: '0 0 4px' }}>Services</h1>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#888', margin: 0 }}>Manage the services you offer to clients</p>
         </div>
-        <button
-          onClick={openCreate}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 24px', background: '#111111', color: '#FFFFFF', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px', letterSpacing: '0.06em' }}
-        >
-          <Plus size={18} /> ADD SERVICE
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ position: 'relative', width: '260px' }}>
+            <Search size={18} color="#888" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+            <input 
+              type="text" 
+              placeholder="Search services..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{ width: '100%', padding: '10px 12px 10px 40px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', outline: 'none' }}
+            />
+          </div>
+          <button
+            onClick={openCreate}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', background: '#E8A020', color: '#111', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px', letterSpacing: '0.06em' }}
+          >
+            <Plus size={18} /> ADD SERVICE
+          </button>
+        </div>
       </div>
 
       {loading ? <AdminPageLoader label="Loading services..." /> : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '1.5rem' }}>
-          {services.map(svc => (
-            <div key={svc.id} style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: '12px', border: '1px solid #EBEBEB', display: 'flex', gap: '1.5rem', alignItems: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-              {svc.image_url ? (
-                <img src={svc.image_url} alt={svc.title} style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px' }} />
-              ) : (
-                <div style={{ width: '120px', height: '120px', background: 'linear-gradient(135deg, #F0F0F0, #E5E5E5)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#CCC' }}>
-                  <ImageIcon size={32} />
-                </div>
-              )}
-              <div style={{ flex: 1 }}>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: '#E8A020', letterSpacing: '0.1em', background: '#FFF8EC', padding: '2px 8px', borderRadius: '12px' }}>{svc.category}</span>
-                <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', margin: '8px 0 4px', color: '#111' }}>{svc.title}</h3>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#6B6B6B', margin: '0 0 8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{svc.description}</p>
-                <div style={{ fontSize: '12px', color: '#999', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                  {svc.items.map(item => <span key={item} style={{ background: '#F5F5F5', padding: '2px 8px', borderRadius: '4px' }}>{item}</span>)}
-                </div>
+        <div style={{ background: '#1a1a1a', borderRadius: '12px', border: '1px solid #222', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
+              <thead>
+                <tr style={{ background: '#111' }}>
+                  <th style={{ padding: '16px 20px', textAlign: 'left', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '15%' }}>IMAGE</th>
+                  <th style={{ padding: '16px 20px', textAlign: 'left', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '25%' }}>SERVICE INFO</th>
+                  <th style={{ padding: '16px 20px', textAlign: 'left', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '45%' }}>DESCRIPTION & ITEMS</th>
+                  <th style={{ padding: '16px 20px', textAlign: 'right', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '15%' }}>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedServices.length > 0 ? (
+                  paginatedServices.map((svc, i) => (
+                    <tr key={svc.id} style={{ background: i % 2 === 0 ? '#1a1a1a' : '#111' }}>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top' }}>
+                        {svc.image_url ? (
+                          <img src={svc.image_url} alt={svc.title} style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} />
+                        ) : (
+                          <div style={{ width: '80px', height: '80px', background: '#222', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#555' }}>
+                            <ImageIcon size={24} />
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top' }}>
+                        <span style={{ display: 'inline-block', fontSize: '11px', fontWeight: 700, color: '#E8A020', letterSpacing: '0.1em', background: 'rgba(232, 160, 32, 0.1)', padding: '2px 8px', borderRadius: '12px', marginBottom: '8px' }}>
+                          {svc.category}
+                        </span>
+                        <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '18px', color: '#fff' }}>{svc.title}</div>
+                      </td>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top' }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#AAA', marginBottom: '12px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                          {svc.description}
+                        </div>
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                          {svc.items.map(item => (
+                            <span key={item} style={{ background: '#222', color: '#ccc', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontFamily: "'DM Sans', sans-serif" }}>
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top', textAlign: 'right' }}>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                          <button onClick={() => openEdit(svc)} style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid #333', color: '#fff', cursor: 'pointer', padding: '8px', borderRadius: '6px', transition: 'all 0.2s' }}>
+                            <Edit2 size={16} />
+                          </button>
+                          <button onClick={() => handleDelete(svc.id)} style={{ background: 'rgba(255, 68, 68, 0.1)', border: '1px solid rgba(255, 68, 68, 0.2)', color: '#FF4444', borderRadius: '6px', cursor: 'pointer', padding: '8px', transition: 'all 0.2s' }}>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: '#888', fontFamily: "'DM Sans', sans-serif" }}>No services found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          {totalPages > 1 && (
+            <div style={{ padding: '1rem 2rem', borderTop: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#111' }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#888' }}>
+                Showing {(page - 1) * itemsPerPage + 1} to {Math.min(page * itemsPerPage, filteredServices.length)} of {filteredServices.length} services
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <button onClick={() => openEdit(svc)} style={{ background: '#F5F5F5', border: 'none', color: '#111', cursor: 'pointer', padding: '10px', borderRadius: '6px' }}><Edit2 size={16} /></button>
-                <button onClick={() => handleDelete(svc.id)} style={{ background: '#FFF5F5', border: 'none', color: '#FF4444', cursor: 'pointer', padding: '10px', borderRadius: '6px' }}><Trash2 size={16} /></button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button 
+                  onClick={() => setPage(p => Math.max(1, p - 1))} 
+                  disabled={page === 1}
+                  style={{ background: '#1a1a1a', border: '1px solid #333', color: page === 1 ? '#555' : '#fff', padding: '6px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', cursor: page === 1 ? 'not-allowed' : 'pointer' }}
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <button 
+                  onClick={() => setPage(p => Math.min(totalPages, p + 1))} 
+                  disabled={page === totalPages}
+                  style={{ background: '#1a1a1a', border: '1px solid #333', color: page === totalPages ? '#555' : '#fff', padding: '6px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
+                >
+                  <ChevronRight size={16} />
+                </button>
               </div>
             </div>
-          ))}
+          )}
         </div>
       )}
 
       {/* Modal */}
       {isOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', backdropFilter: 'blur(4px)' }}>
-          <div style={{ background: '#FFFFFF', borderRadius: '16px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px rgba(0,0,0,0.25)' }}>
-            <div style={{ padding: '2rem', borderBottom: '1px solid #F0F0F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: '#FFFFFF', zIndex: 1 }}>
-              <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '24px', margin: 0 }}>{editingId ? 'EDIT SERVICE' : 'ADD SERVICE'}</h2>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', backdropFilter: 'blur(4px)' }}>
+          <div style={{ background: '#1a1a1a', borderRadius: '16px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px rgba(0,0,0,0.5)', border: '1px solid #333' }}>
+            <div style={{ padding: '2rem', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: '#1a1a1a', zIndex: 1 }}>
+              <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '24px', margin: 0, color: '#fff' }}>{editingId ? 'EDIT SERVICE' : 'ADD SERVICE'}</h2>
               <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}><X size={20} /></button>
             </div>
             <form onSubmit={handleSubmit} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -180,15 +269,15 @@ export default function ServicesAdminPage() {
                 <div style={{ gridColumn: '1/-1' }}>
                   <label style={labelStyle}>COVER IMAGE</label>
                   {imagePreview && <img src={imagePreview} alt="preview" style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '8px', marginBottom: '0.75rem' }} />}
-                  <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', border: '1px dashed #CCC', borderRadius: '6px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#888' }}>
+                  <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', border: '1px dashed #444', borderRadius: '6px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#aaa', background: '#111' }}>
                     <ImageIcon size={16} />
                     {imageFile ? imageFile.name : 'Choose Image'}
                     <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
                   </label>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '1rem', paddingTop: '1rem', borderTop: '1px solid #F0F0F0', marginTop: '0.5rem' }}>
-                <button type="button" onClick={() => setIsOpen(false)} style={{ flex: 1, padding: '13px', background: '#F5F5F5', color: '#111', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px' }}>CANCEL</button>
+              <div style={{ display: 'flex', gap: '1rem', paddingTop: '1rem', borderTop: '1px solid #333', marginTop: '0.5rem' }}>
+                <button type="button" onClick={() => setIsOpen(false)} style={{ flex: 1, padding: '13px', background: '#222', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px' }}>CANCEL</button>
                 <button type="submit" disabled={submitting} style={{ flex: 2, padding: '13px', background: '#E8A020', color: '#111', border: 'none', borderRadius: '8px', cursor: submitting ? 'not-allowed' : 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
                   {submitting ? <><Loader2 size={16} className="animate-spin" /> SAVING...</> : <><Check size={16} /> {editingId ? 'UPDATE SERVICE' : 'SAVE SERVICE'}</>}
                 </button>

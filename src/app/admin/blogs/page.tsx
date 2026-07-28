@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, X, Check } from 'lucide-react'
+import { Plus, Trash2, Edit2, Loader2, Image as ImageIcon, X, Check, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { AdminPageLoader } from '@/components/admin/LoadingSpinner'
 import { format } from 'date-fns'
 
@@ -24,6 +24,10 @@ export default function BlogsAdminPage() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const itemsPerPage = 8
+
   // Form state
   const [form, setForm] = useState(emptyForm)
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -96,61 +100,112 @@ export default function BlogsAdminPage() {
     fetchBlogs()
   }
 
-  const inputStyle = { width: '100%', padding: '11px 14px', border: '1px solid #E5E5E5', borderRadius: '6px', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', outline: 'none', background: '#FAFAFA' }
-  const labelStyle = { display: 'block', marginBottom: '6px', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.06em', color: '#555' }
+  const filteredBlogs = useMemo(() => {
+    return blogs.filter(b => 
+      b.title.toLowerCase().includes(search.toLowerCase()) || 
+      (b.subheading && b.subheading.toLowerCase().includes(search.toLowerCase()))
+    )
+  }, [blogs, search])
+
+  const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage)
+  const paginatedBlogs = filteredBlogs.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+
+  useEffect(() => { setPage(1) }, [search])
+
+  const inputStyle = { width: '100%', padding: '11px 14px', border: '1px solid #333', borderRadius: '6px', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', outline: 'none', background: '#111', color: '#fff' }
+  const labelStyle = { display: 'block', marginBottom: '6px', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '13px', letterSpacing: '0.06em', color: '#888' }
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '38px', color: '#111111', textTransform: 'uppercase', margin: '0 0 4px' }}>Blog & News</h1>
+          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '38px', color: '#fff', textTransform: 'uppercase', margin: '0 0 4px' }}>Blog & News</h1>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#888', margin: 0 }}>Publish articles, updates, and announcements</p>
         </div>
-        <button
-          onClick={openCreate}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 24px', background: '#111111', color: '#FFFFFF', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px', letterSpacing: '0.06em' }}
-        >
-          <Plus size={18} /> NEW POST
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ position: 'relative', width: '260px' }}>
+            <Search size={18} color="#888" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+            <input 
+              type="text" 
+              placeholder="Search posts..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{ width: '100%', padding: '10px 12px 10px 40px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', outline: 'none' }}
+            />
+          </div>
+          <button
+            onClick={openCreate}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', background: '#E8A020', color: '#111', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px', letterSpacing: '0.06em' }}
+          >
+            <Plus size={18} /> NEW POST
+          </button>
+        </div>
       </div>
 
       {loading ? <AdminPageLoader label="Loading posts..." /> : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {blogs.map(blog => (
-            <div key={blog.id} style={{ background: '#FFFFFF', borderRadius: '12px', border: '1px solid #EBEBEB', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-              <div style={{ position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', gap: '6px', zIndex: 10 }}>
-                  <button onClick={() => openEdit(blog)} style={{ width: '32px', height: '32px', background: '#FFFFFF', border: 'none', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
-                    <Edit2 size={14} color="#111" />
-                  </button>
-                  <button onClick={() => handleDelete(blog.id)} style={{ width: '32px', height: '32px', background: '#FFFFFF', border: 'none', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
-                    <Trash2 size={14} color="#FF4444" />
-                  </button>
-                </div>
-                {blog.image_url ? (
-                  <img src={blog.image_url} alt={blog.title} style={{ width: '100%', height: '180px', objectFit: 'cover' }} />
-                ) : (
-                  <div style={{ width: '100%', height: '180px', background: 'linear-gradient(135deg, #F0F0F0, #E5E5E5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#CCC' }}>
-                    <ImageIcon size={40} />
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+            {paginatedBlogs.map(blog => (
+              <div key={blog.id} style={{ background: '#1a1a1a', borderRadius: '12px', border: '1px solid #222', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+                <div style={{ position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', gap: '6px', zIndex: 10 }}>
+                    <button onClick={() => openEdit(blog)} style={{ width: '32px', height: '32px', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.8)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}>
+                      <Edit2 size={14} color="#fff" />
+                    </button>
+                    <button onClick={() => handleDelete(blog.id)} style={{ width: '32px', height: '32px', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,0,0,0.8)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}>
+                      <Trash2 size={14} color="#FF4444" />
+                    </button>
                   </div>
-                )}
+                  {blog.image_url ? (
+                    <img src={blog.image_url} alt={blog.title} style={{ width: '100%', height: '180px', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: '100%', height: '180px', background: '#222', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#555' }}>
+                      <ImageIcon size={40} />
+                    </div>
+                  )}
+                </div>
+                <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#AAA', marginBottom: '8px', fontWeight: 500 }}>{format(new Date(blog.published_at), 'MMMM dd, yyyy')}</div>
+                  <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', margin: '0 0 0.5rem', lineHeight: 1.2, color: '#fff' }}>{blog.title}</h3>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#888', margin: '0', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{blog.subheading}</p>
+                </div>
               </div>
-              <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#999', marginBottom: '8px', fontWeight: 500 }}>{format(new Date(blog.published_at), 'MMMM dd, yyyy')}</div>
-                <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', margin: '0 0 0.5rem', lineHeight: 1.2 }}>{blog.title}</h3>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#6B6B6B', margin: '0', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{blog.subheading}</p>
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', padding: '1rem' }}>
+              <button 
+                onClick={() => setPage(p => Math.max(1, p - 1))} 
+                disabled={page === 1}
+                style={{ background: '#1a1a1a', border: '1px solid #333', color: page === 1 ? '#555' : '#fff', padding: '8px 16px', borderRadius: '8px', display: 'flex', alignItems: 'center', cursor: page === 1 ? 'not-allowed' : 'pointer' }}
+              >
+                <ChevronLeft size={18} /> PREV
+              </button>
+              <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px', color: '#888', fontFamily: "'DM Sans', sans-serif", fontSize: '14px' }}>
+                Page {page} of {totalPages}
               </div>
+              <button 
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))} 
+                disabled={page === totalPages}
+                style={{ background: '#1a1a1a', border: '1px solid #333', color: page === totalPages ? '#555' : '#fff', padding: '8px 16px', borderRadius: '8px', display: 'flex', alignItems: 'center', cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
+              >
+                NEXT <ChevronRight size={18} />
+              </button>
             </div>
-          ))}
-        </div>
+          )}
+          {filteredBlogs.length === 0 && (
+            <div style={{ padding: '3rem', textAlign: 'center', color: '#888', fontFamily: "'DM Sans', sans-serif" }}>No matching posts found.</div>
+          )}
+        </>
       )}
 
       {/* Modal */}
       {isOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', backdropFilter: 'blur(4px)' }}>
-          <div style={{ background: '#FFFFFF', borderRadius: '16px', width: '100%', maxWidth: '720px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px rgba(0,0,0,0.25)' }}>
-            <div style={{ padding: '2rem', borderBottom: '1px solid #F0F0F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: '#FFFFFF', zIndex: 1 }}>
-              <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '24px', margin: 0 }}>{editingId ? 'EDIT POST' : 'NEW POST'}</h2>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', backdropFilter: 'blur(4px)' }}>
+          <div style={{ background: '#1a1a1a', borderRadius: '16px', width: '100%', maxWidth: '720px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px rgba(0,0,0,0.5)', border: '1px solid #333' }}>
+            <div style={{ padding: '2rem', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: '#1a1a1a', zIndex: 1 }}>
+              <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '24px', margin: 0, color: '#fff' }}>{editingId ? 'EDIT POST' : 'NEW POST'}</h2>
               <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}><X size={20} /></button>
             </div>
             <form onSubmit={handleSubmit} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -165,7 +220,7 @@ export default function BlogsAdminPage() {
               <div>
                 <label style={labelStyle}>COVER IMAGE</label>
                 {imagePreview && <img src={imagePreview} alt="preview" style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px', marginBottom: '0.75rem' }} />}
-                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', border: '1px dashed #CCC', borderRadius: '6px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#888' }}>
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', border: '1px dashed #444', borderRadius: '6px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#aaa', background: '#111' }}>
                   <ImageIcon size={16} />
                   {imageFile ? imageFile.name : 'Choose Image'}
                   <input type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
@@ -175,8 +230,8 @@ export default function BlogsAdminPage() {
                 <label style={labelStyle}>BODY CONTENT *</label>
                 <textarea required rows={12} style={{ ...inputStyle, resize: 'vertical', fontFamily: 'monospace' }} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} placeholder="Write your full article here..." />
               </div>
-              <div style={{ display: 'flex', gap: '1rem', paddingTop: '1rem', borderTop: '1px solid #F0F0F0', marginTop: '0.5rem' }}>
-                <button type="button" onClick={() => setIsOpen(false)} style={{ flex: 1, padding: '13px', background: '#F5F5F5', color: '#111', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px' }}>CANCEL</button>
+              <div style={{ display: 'flex', gap: '1rem', paddingTop: '1rem', borderTop: '1px solid #333', marginTop: '0.5rem' }}>
+                <button type="button" onClick={() => setIsOpen(false)} style={{ flex: 1, padding: '13px', background: '#222', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px' }}>CANCEL</button>
                 <button type="submit" disabled={submitting} style={{ flex: 2, padding: '13px', background: '#E8A020', color: '#111', border: 'none', borderRadius: '8px', cursor: submitting ? 'not-allowed' : 'pointer', fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '15px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
                   {submitting ? <><Loader2 size={16} className="animate-spin" /> SAVING...</> : <><Check size={16} /> {editingId ? 'UPDATE POST' : 'PUBLISH POST'}</>}
                 </button>

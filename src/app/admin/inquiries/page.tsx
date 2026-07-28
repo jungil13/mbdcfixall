@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { Loader2, Trash2 } from 'lucide-react'
+import { Loader2, Trash2, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 
 type Inquiry = {
   id: string
@@ -17,6 +17,10 @@ type Inquiry = {
 export default function InquiriesAdminPage() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const itemsPerPage = 10
+
   const supabase = createClient()
 
   const fetchInquiries = async () => {
@@ -35,53 +39,123 @@ export default function InquiriesAdminPage() {
     fetchInquiries()
   }
 
+  const filteredInquiries = useMemo(() => {
+    return inquiries.filter(i => 
+      i.name.toLowerCase().includes(search.toLowerCase()) || 
+      i.email.toLowerCase().includes(search.toLowerCase()) ||
+      (i.service && i.service.toLowerCase().includes(search.toLowerCase()))
+    )
+  }, [inquiries, search])
+
+  const totalPages = Math.ceil(filteredInquiries.length / itemsPerPage)
+  const paginatedInquiries = filteredInquiries.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+
+  useEffect(() => {
+    setPage(1)
+  }, [search])
+
   return (
     <div>
-      <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '32px', color: '#111111', textTransform: 'uppercase', marginBottom: '2rem' }}>
-        Customer Inquiries
-      </h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: '32px', color: '#fff', textTransform: 'uppercase', margin: '0 0 8px' }}>
+            Customer Inquiries
+          </h1>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', color: '#888', margin: 0 }}>Manage and respond to customer messages</p>
+        </div>
+        <div style={{ position: 'relative', width: '300px', maxWidth: '100%' }}>
+          <Search size={18} color="#888" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+          <input 
+            type="text" 
+            placeholder="Search by name, email, or service..." 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ width: '100%', padding: '10px 12px 10px 40px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', outline: 'none' }}
+          />
+        </div>
+      </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '3rem' }}><Loader2 className="animate-spin" /></div>
+        <div style={{ textAlign: 'center', padding: '3rem', color: '#fff' }}><Loader2 className="animate-spin" /></div>
       ) : inquiries.length === 0 ? (
-        <div style={{ background: '#FFFFFF', padding: '3rem', textAlign: 'center', borderRadius: '8px', border: '1px solid #E5E5E5' }}>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", color: '#6B6B6B' }}>No inquiries yet.</p>
+        <div style={{ background: '#1a1a1a', padding: '3rem', textAlign: 'center', borderRadius: '12px', border: '1px solid #222' }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", color: '#888' }}>No inquiries yet.</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {inquiries.map((inq) => (
-            <div key={inq.id} style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: '8px', border: '1px solid #E5E5E5', display: 'flex', gap: '1.5rem' }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                  <div>
-                    <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '20px', margin: '0 0 4px' }}>{inq.name}</h3>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#6B6B6B', display: 'flex', gap: '1rem' }}>
-                      <a href={`mailto:${inq.email}`} style={{ color: '#E8A020', textDecoration: 'none' }}>{inq.email}</a>
-                      {inq.phone && <span>{inq.phone}</span>}
-                    </div>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#999' }}>
-                      {new Date(inq.created_at).toLocaleString()}
-                    </div>
-                    {inq.service && (
-                      <div style={{ display: 'inline-block', background: '#F7F4EE', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 600, color: '#111111', marginTop: '6px' }}>
-                        {inq.service.toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div style={{ background: '#F9F9F9', padding: '1rem', borderRadius: '4px', fontFamily: "'DM Sans', sans-serif", fontSize: '14px', lineHeight: 1.6, color: '#333', whiteSpace: 'pre-wrap' }}>
-                  {inq.message}
-                </div>
+        <div style={{ background: '#1a1a1a', borderRadius: '12px', border: '1px solid #222', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
+              <thead>
+                <tr style={{ background: '#111' }}>
+                  <th style={{ padding: '16px 20px', textAlign: 'left', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '25%' }}>CUSTOMER</th>
+                  <th style={{ padding: '16px 20px', textAlign: 'left', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '45%' }}>MESSAGE</th>
+                  <th style={{ padding: '16px 20px', textAlign: 'left', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '20%' }}>DATE</th>
+                  <th style={{ padding: '16px 20px', textAlign: 'right', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '13px', fontWeight: 700, color: '#888', letterSpacing: '0.08em', borderBottom: '1px solid #333', width: '10%' }}>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedInquiries.length > 0 ? (
+                  paginatedInquiries.map((inq, i) => (
+                    <tr key={inq.id} style={{ background: i % 2 === 0 ? '#1a1a1a' : '#111' }}>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top' }}>
+                        <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '18px', color: '#fff', marginBottom: '4px' }}>{inq.name}</div>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#AAA', marginBottom: '4px' }}>
+                          <a href={`mailto:${inq.email}`} style={{ color: '#E8A020', textDecoration: 'none' }}>{inq.email}</a>
+                        </div>
+                        {inq.phone && <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#888' }}>{inq.phone}</div>}
+                      </td>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top' }}>
+                        {inq.service && (
+                          <div style={{ display: 'inline-block', background: 'rgba(232, 160, 32, 0.1)', border: '1px solid rgba(232, 160, 32, 0.3)', padding: '3px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: 700, color: '#E8A020', marginBottom: '8px' }}>
+                            {inq.service.toUpperCase()}
+                          </div>
+                        )}
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', lineHeight: 1.6, color: '#ccc', whiteSpace: 'pre-wrap', maxHeight: '100px', overflowY: 'auto' }}>
+                          {inq.message}
+                        </div>
+                      </td>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top', fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#888' }}>
+                        {new Date(inq.created_at).toLocaleString()}
+                      </td>
+                      <td style={{ padding: '20px', borderBottom: '1px solid #222', verticalAlign: 'top', textAlign: 'right' }}>
+                        <button onClick={() => handleDelete(inq.id)} style={{ background: 'rgba(255, 68, 68, 0.1)', border: '1px solid rgba(255, 68, 68, 0.2)', color: '#FF4444', borderRadius: '6px', cursor: 'pointer', padding: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}>
+                          <Trash2 size={16} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: '#888', fontFamily: "'DM Sans', sans-serif" }}>No matching inquiries found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          
+          {totalPages > 1 && (
+            <div style={{ padding: '1rem 2rem', borderTop: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#111' }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#888' }}>
+                Showing {(page - 1) * itemsPerPage + 1} to {Math.min(page * itemsPerPage, filteredInquiries.length)} of {filteredInquiries.length} inquiries
               </div>
-              <div>
-                <button onClick={() => handleDelete(inq.id)} style={{ background: 'none', border: 'none', color: '#FF4444', cursor: 'pointer', padding: '8px' }}>
-                  <Trash2 size={18} />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button 
+                  onClick={() => setPage(p => Math.max(1, p - 1))} 
+                  disabled={page === 1}
+                  style={{ background: '#1a1a1a', border: '1px solid #333', color: page === 1 ? '#555' : '#fff', padding: '6px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', cursor: page === 1 ? 'not-allowed' : 'pointer' }}
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <button 
+                  onClick={() => setPage(p => Math.min(totalPages, p + 1))} 
+                  disabled={page === totalPages}
+                  style={{ background: '#1a1a1a', border: '1px solid #333', color: page === totalPages ? '#555' : '#fff', padding: '6px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
+                >
+                  <ChevronRight size={16} />
                 </button>
               </div>
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>

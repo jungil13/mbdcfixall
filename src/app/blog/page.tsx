@@ -67,14 +67,6 @@ export default async function BlogIndexPage() {
                     marginBottom: '4rem',
                     transition: 'transform 0.3s, box-shadow 0.3s',
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)'
-                    e.currentTarget.style.boxShadow = '0 32px 64px rgba(0,0,0,0.10)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)'
-                    e.currentTarget.style.boxShadow = '0 24px 48px rgba(0,0,0,0.06)'
-                  }}
                 >
                   <div style={{ padding: 'clamp(2rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#E8A020', fontWeight: 700, letterSpacing: '0.15em', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -143,6 +135,7 @@ export default async function BlogIndexPage() {
             <style dangerouslySetInnerHTML={{__html: `
               .blog-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important; }
               .blog-card:hover img { transform: scale(1.05); }
+              .blog-featured-grid:hover { transform: translateY(-4px); box-shadow: 0 32px 64px rgba(0,0,0,0.10) !important; }
             `}} />
           </>
         )}

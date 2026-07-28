@@ -176,7 +176,7 @@ export function Navbar() {
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = '#F0B030')}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = '#E8A020')}
             >
-              GET A QUOTE
+              INQUIRE NOW!
             </a>
 
             <button
