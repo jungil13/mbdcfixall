@@ -88,9 +88,7 @@ export function Navbar() {
     <>
       {/* Page loading bar */}
       {loading && (
-        <div className="fixed top-0 left-0 right-0 h-[3px] bg-[#E8A020] z-[9999] animate-[loadBar_1s_ease-in-out]">
-          <style>{`@keyframes loadBar { from { width: 0% } to { width: 85% } }`}</style>
-        </div>
+        <div className="fixed top-0 left-0 right-0 h-[3px] bg-[#E8A020] z-[9999] animate-[loadBar_1s_ease-in-out]" />
       )}
 
       {/* TOP HEADER */}
@@ -100,31 +98,7 @@ export function Navbar() {
         }`}
       >
         {/* Mobile App Download Banner */}
-        {showBanner && (
-          <div className="lg:hidden flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-zinc-800">
-            <div className="flex items-center gap-3">
-              <button onClick={() => setShowBanner(false)} className="text-zinc-400 p-1">
-                <X size={16} />
-              </button>
-              <img src="/mightyb_logo.png" alt="App Icon" className="w-8 h-8 rounded-md bg-black object-contain p-1" />
-              <div className="flex flex-col">
-                <span className="font-barlow font-bold text-white text-sm leading-tight">MBDC FIX ALL</span>
-                <div className="flex items-center gap-1">
-                  <span className="text-zinc-400 text-[10px]">FREE - In Google Play</span>
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                window.dispatchEvent(new Event("trigger-pwa-install"));
-              }}
-              className="bg-[#E8A020] text-black font-barlow font-bold px-3 py-1 rounded text-sm uppercase tracking-wide cursor-pointer hover:bg-[#f0b030] transition-colors"
-            >
-              Install
-            </button>
-          </div>
-        )}
+      
 
         {/* Main Navbar */}
         <div className="max-w-[1280px] mx-auto px-5 flex items-center justify-between h-[68px]">
@@ -148,7 +122,9 @@ export function Navbar() {
           {/* Desktop Nav */}
           <nav className="navbar-desktop-nav hidden lg:flex gap-10 items-center">
             {navLinks.map((link) => {
-              const isActive = !link.href.startsWith('#') && pathname === link.href
+              const isActive = link.href.startsWith('#')
+                ? isHomePage && activeSection === link.href.substring(1)
+                : pathname === link.href
               return (
                 <a
                   key={link.label}

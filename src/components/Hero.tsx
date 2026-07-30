@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { ChevronDown, Hammer, Settings, Shield } from "lucide-react";
 
 const serviceHighlights = [
@@ -13,7 +13,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative h-svh min-h-[560px] flex items-center overflow-hidden bg-[#1a1a1a]">
+    <section className="relative h-svh min-h-[560px] pt-[80px] lg:pt-[100px] pb-10 flex items-center overflow-hidden bg-[#1a1a1a]">
       {/* Background image */}
       <img
         src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -26,25 +26,6 @@ export function Hero() {
 
       {/* Floating Bubbles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <style>{`
-          @keyframes floatBubble {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.4; }
-            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
-          }
-          @keyframes floatBubbleSide {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(30px); }
-            100% { transform: translateX(-30px); }
-          }
-          .bubble {
-            position: absolute;
-            bottom: -100px;
-            border-radius: 50%;
-            animation: floatBubble linear infinite, floatBubbleSide ease-in-out infinite alternate;
-          }
-        `}</style>
         {[
           { l: "10%", s: 40, bg: "rgba(255,255,255,0.05)", d: "12s, 4s", delay: "0s, 0s" },
           { l: "20%", s: 80, bg: "rgba(255,255,255,0.02)", d: "18s, 5s", delay: "2s, 1s" },
