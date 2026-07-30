@@ -52,7 +52,7 @@ export default function AppSplashScreen() {
 
       {/* Main Center Branding */}
       <div className="flex flex-col items-center justify-center text-center relative z-10 my-auto">
-        <div className="relative mb-6 group">
+        <div className="relative mb-6 group hidden sm:block">
           {/* Pulsing ring around logo */}
           <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-[#E8A020] via-yellow-500 to-[#E8A020] opacity-40 blur-md animate-pulse" />
           

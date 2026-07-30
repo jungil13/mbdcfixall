@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { MessageSquare, FileText, Users, Wrench, TrendingUp } from 'lucide-react'
 
+
 type Stats = {
   inquiries: number
   blogs: number
@@ -24,6 +25,14 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<Stats>({ inquiries: 0, blogs: 0, team: 0, services: 0 })
   const [recent, setRecent] = useState<RecentInquiry[]>([])
   const [loading, setLoading] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const fetchStats = async () => {
     const [
@@ -78,13 +87,13 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }`}</style>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
           {[1,2,3,4].map(i => (
-            <div key={i} style={{ background: '#1a1a1a', padding: '1.75rem', borderRadius: '12px', border: '1px solid #333', animation: 'pulse 1.5s ease-in-out infinite' }}>
-              <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }`}</style>
-              <div style={{ height: '14px', background: '#333', borderRadius: '4px', marginBottom: '12px', width: '60%' }} />
-              <div style={{ height: '36px', background: '#333', borderRadius: '4px', width: '40%' }} />
+            <div key={i} style={{ background: '#1a1a1a', padding: '1.1rem', borderRadius: '12px', border: '1px solid #333', animation: 'pulse 1.5s ease-in-out infinite' }}>
+              <div style={{ height: '12px', background: '#333', borderRadius: '4px', marginBottom: '10px', width: '60%' }} />
+              <div style={{ height: '30px', background: '#333', borderRadius: '4px', width: '40%' }} />
             </div>
           ))}
         </div>
@@ -93,33 +102,34 @@ export default function DashboardPage() {
   }
 
   return (
-    <div>
+    <div style={{ maxWidth: '100%', overflowX: 'hidden' }}>
+      <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }`}</style>
+
       {/* Header */}
-      <div style={{ marginBottom: '2.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-          <TrendingUp size={20} color="#E8A020" />
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#888', fontWeight: 600 }}>Live dashboard — updates automatically</span>
-          <span style={{ width: '8px', height: '8px', background: '#4CAF50', borderRadius: '50%', display: 'inline-block', animation: 'blink 2s ease-in-out infinite' }} />
-          <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }`}</style>
+      <div style={{ marginBottom: '1.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
+          <TrendingUp size={16} color="#E8A020" />
+          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#888', fontWeight: 600 }}>Live dashboard — updates automatically</span>
+          <span style={{ width: '7px', height: '7px', background: '#4CAF50', borderRadius: '50%', display: 'inline-block', animation: 'blink 2s ease-in-out infinite' }} />
         </div>
-        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: 'clamp(32px, 5vw, 38px)', color: '#fff', textTransform: 'uppercase', margin: 0 }}>
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: 'clamp(26px, 6vw, 38px)', color: '#fff', textTransform: 'uppercase', margin: 0 }}>
           Dashboard
         </h1>
       </div>
 
-      {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+      {/* Stat Cards — 2 columns on mobile, 4 on desktop */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: isMobile ? '0.75rem' : '1.5rem', marginBottom: '2rem' }}>
         {statCards.map(card => {
           const Icon = card.icon
           return (
-            <div key={card.label} style={{ background: '#1a1a1a', padding: '1.75rem', borderRadius: '12px', border: '1px solid #222', display: 'flex', flexDirection: 'column', gap: '1rem', boxShadow: '0 4px 12px rgba(0,0,0,0.2)', transition: 'box-shadow 0.2s' }}>
+            <div key={card.label} style={{ background: '#1a1a1a', padding: isMobile ? '1rem' : '1.75rem', borderRadius: '12px', border: '1px solid #222', display: 'flex', flexDirection: 'column', gap: '0.75rem', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', color: '#AAA', fontWeight: 600, margin: '0 0 8px' }}>{card.label}</p>
-                  <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '42px', fontWeight: 800, color: '#fff', lineHeight: 1 }}>{card.value}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: isMobile ? '10px' : '13px', color: '#AAA', fontWeight: 600, margin: '0 0 6px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{card.label}</p>
+                  <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: isMobile ? '32px' : '42px', fontWeight: 800, color: '#fff', lineHeight: 1 }}>{card.value}</span>
                 </div>
-                <div style={{ width: '48px', height: '48px', background: card.bg, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Icon size={22} color={card.color} />
+                <div style={{ width: isMobile ? '34px' : '48px', height: isMobile ? '34px' : '48px', background: card.bg, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginLeft: '8px' }}>
+                  <Icon size={isMobile ? 16 : 22} color={card.color} />
                 </div>
               </div>
             </div>
@@ -129,9 +139,9 @@ export default function DashboardPage() {
 
       {/* Recent Inquiries */}
       <div style={{ background: '#1a1a1a', borderRadius: '12px', border: '1px solid #222', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
-        <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: '22px', margin: 0, color: '#fff' }}>Recent Inquiries</h2>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#4CAF50', fontWeight: 600 }}>
+        <div style={{ padding: isMobile ? '0.9rem 1.1rem' : '1.5rem 2rem', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: isMobile ? '17px' : '22px', margin: 0, color: '#fff' }}>Recent Inquiries</h2>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: "'DM Sans', sans-serif", fontSize: '11px', color: '#4CAF50', fontWeight: 600 }}>
             <span style={{ width: '6px', height: '6px', background: '#4CAF50', borderRadius: '50%', animation: 'blink 2s ease-in-out infinite' }} />
             LIVE
           </span>
@@ -140,9 +150,30 @@ export default function DashboardPage() {
           <div style={{ padding: '3rem', textAlign: 'center', color: '#888', fontFamily: "'DM Sans', sans-serif" }}>
             No inquiries yet. They will appear here in real-time!
           </div>
+        ) : isMobile ? (
+          /* Mobile: stacked card rows */
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {recent.map((inq, i) => (
+              <div key={inq.id} style={{ padding: '0.9rem 1.1rem', borderBottom: i < recent.length - 1 ? '1px solid #222' : 'none', background: i % 2 === 0 ? '#1a1a1a' : '#111', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', fontWeight: 700, color: '#fff' }}>{inq.name}</span>
+                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '11px', color: '#666', flexShrink: 0 }}>
+                    {new Date(inq.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </span>
+                </div>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '12px', color: '#888', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{inq.email}</span>
+                {inq.service && (
+                  <span style={{ display: 'inline-block', alignSelf: 'flex-start', marginTop: '4px', background: 'rgba(232, 160, 32, 0.1)', border: '1px solid rgba(232, 160, 32, 0.3)', padding: '2px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: 700, color: '#E8A020' }}>
+                    {inq.service}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
         ) : (
+          /* Desktop: table */
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '500px' }}>
               <thead>
                 <tr style={{ background: '#111' }}>
                   {['Customer', 'Email', 'Service', 'Date'].map(h => (
