@@ -1,5 +1,11 @@
-"use client";
-import { ChevronDown } from "lucide-react";
+﻿"use client";
+import { ChevronDown, Hammer, Settings, Shield } from "lucide-react";
+
+const serviceHighlights = [
+  { icon: Hammer, label: "PROPERTY REPAIR" },
+  { icon: Settings, label: "MAINTENANCE" },
+  { icon: Shield, label: "FACILITY SERVICES" },
+];
 
 export function Hero() {
   const scrollToAbout = () => {
@@ -7,43 +13,19 @@ export function Hero() {
   };
 
   return (
-    <section
-      style={{
-        position: "relative",
-        height: "100svh",
-        minHeight: "560px",
-        display: "flex",
-        alignItems: "center",
-        overflow: "hidden",
-        background: "#1a1a1a",
-      }}
-    >
+    <section className="relative h-svh min-h-[560px] flex items-center overflow-hidden bg-[#1a1a1a]">
       {/* Background image */}
       <img
-        src="https://images.unsplash.com/photo-1602513704488-9dc3af8f9983?w=1920&h=1080&fit=crop&auto=format"
-        alt="Construction crane silhouette against orange sky"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "center",
-        }}
+        src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="Professional home repair technician at work"
+        className="absolute inset-0 w-full h-full object-cover object-center"
       />
 
       {/* Dark gradient overlay */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(105deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.3) 100%)",
-        }}
-      />
+      <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.70)_55%,rgba(0,0,0,0.35)_100%)]" />
 
-      {/* Floating Bubbles Effect */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+      {/* Floating Bubbles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <style>{`
           @keyframes floatBubble {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
@@ -63,189 +45,101 @@ export function Hero() {
             animation: floatBubble linear infinite, floatBubbleSide ease-in-out infinite alternate;
           }
         `}</style>
-        {/* White Bubbles */}
-        <div className="bubble" style={{ left: '10%', width: '40px', height: '40px', background: 'rgba(255,255,255,0.05)', animationDuration: '12s, 4s', animationDelay: '0s, 0s' }} />
-        <div className="bubble" style={{ left: '20%', width: '80px', height: '80px', background: 'rgba(255,255,255,0.02)', animationDuration: '18s, 5s', animationDelay: '2s, 1s' }} />
-        <div className="bubble" style={{ left: '40%', width: '30px', height: '30px', background: 'rgba(255,255,255,0.08)', animationDuration: '10s, 3s', animationDelay: '4s, 2s' }} />
-        <div className="bubble" style={{ left: '70%', width: '60px', height: '60px', background: 'rgba(255,255,255,0.03)', animationDuration: '15s, 4s', animationDelay: '1s, 0s' }} />
-        <div className="bubble" style={{ left: '85%', width: '50px', height: '50px', background: 'rgba(255,255,255,0.04)', animationDuration: '14s, 3.5s', animationDelay: '5s, 1s' }} />
-        
-        {/* Yellow Bubbles */}
-        <div className="bubble" style={{ left: '15%', width: '35px', height: '35px', background: 'rgba(232, 160, 32, 0.1)', animationDuration: '11s, 3.5s', animationDelay: '1s, 0s' }} />
-        <div className="bubble" style={{ left: '35%', width: '55px', height: '55px', background: 'rgba(232, 160, 32, 0.05)', animationDuration: '16s, 4.5s', animationDelay: '3s, 1s' }} />
-        <div className="bubble" style={{ left: '55%', width: '25px', height: '25px', background: 'rgba(232, 160, 32, 0.15)', animationDuration: '9s, 2.5s', animationDelay: '0s, 2s' }} />
-        <div className="bubble" style={{ left: '75%', width: '45px', height: '45px', background: 'rgba(232, 160, 32, 0.08)', animationDuration: '13s, 4s', animationDelay: '4s, 0s' }} />
-        <div className="bubble" style={{ left: '90%', width: '70px', height: '70px', background: 'rgba(232, 160, 32, 0.03)', animationDuration: '17s, 5s', animationDelay: '2s, 1s' }} />
+        {[
+          { l: "10%", s: 40, bg: "rgba(255,255,255,0.05)", d: "12s, 4s", delay: "0s, 0s" },
+          { l: "20%", s: 80, bg: "rgba(255,255,255,0.02)", d: "18s, 5s", delay: "2s, 1s" },
+          { l: "40%", s: 30, bg: "rgba(255,255,255,0.08)", d: "10s, 3s", delay: "4s, 2s" },
+          { l: "70%", s: 60, bg: "rgba(255,255,255,0.03)", d: "15s, 4s", delay: "1s, 0s" },
+          { l: "85%", s: 50, bg: "rgba(255,255,255,0.04)", d: "14s, 3.5s", delay: "5s, 1s" },
+          { l: "15%", s: 35, bg: "rgba(232,160,32,0.10)", d: "11s, 3.5s", delay: "1s, 0s" },
+          { l: "35%", s: 55, bg: "rgba(232,160,32,0.05)", d: "16s, 4.5s", delay: "3s, 1s" },
+          { l: "55%", s: 25, bg: "rgba(232,160,32,0.15)", d: "9s, 2.5s", delay: "0s, 2s" },
+          { l: "75%", s: 45, bg: "rgba(232,160,32,0.08)", d: "13s, 4s", delay: "4s, 0s" },
+        ].map((b, i) => (
+          <div
+            key={i}
+            className="bubble"
+            style={{ left: b.l, width: b.s, height: b.s, background: b.bg, animationDuration: b.d, animationDelay: b.delay }}
+          />
+        ))}
       </div>
 
       {/* Accent line left */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: "5px",
-          background: "#E8A020",
-        }}
-      />
+      <div className="absolute left-0 top-0 bottom-0 w-[5px] bg-[#E8A020]" />
 
       {/* Content */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: "1280px",
-          margin: "0 auto",
-          padding: "0 1.25rem",
-          width: "100%",
-        }}
-      >
-        <div style={{ maxWidth: "760px" }}>
+      <div className="relative z-10 max-w-[1280px] mx-auto px-5 w-full">
+        <div className="max-w-[800px]">
           {/* Label */}
           <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              marginBottom: "1.25rem",
-              animation: "fadeInUp 0.8s ease-out both",
-              animationDelay: "0.1s",
-            }}
+            className="inline-flex items-center gap-[10px] mb-5"
+            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.1s" }}
           >
-            <div
-              style={{ width: "40px", height: "2px", background: "#E8A020" }}
-            />
-            <span
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "clamp(10px, 2.5vw, 13px)",
-                letterSpacing: "0.18em",
-                color: "#E8A020",
-                fontWeight: 500,
-              }}
-            >
-              CEBU&apos;S TRUSTED BUILDER SINCE 1999
+            <div className="w-10 h-[2px] bg-[#E8A020]" />
+            <span className="font-dm text-[clamp(10px,2.5vw,13px)] tracking-[0.18em] text-[#E8A020] font-medium">
+              CEBU&apos;S TRUSTED HOME REPAIR SPECIALISTS
             </span>
           </div>
 
           {/* Headline */}
           <h1
-            style={{
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(44px, 10vw, 96px)",
-              lineHeight: 0.95,
-              color: "#FFFFFF",
-              margin: "0 0 1.25rem",
-              letterSpacing: "-0.01em",
-              textTransform: "uppercase",
-              animation: "fadeInUp 0.8s ease-out both",
-              animationDelay: "0.25s",
-            }}
+            className="font-barlow font-black text-[clamp(52px,10vw,100px)] leading-[0.92] text-white mb-5 tracking-[-0.01em] uppercase"
+            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.25s" }}
           >
-            MIGHTYBEE
+            MBDC
             <br />
-            <span style={{ color: "#E8A020" }}>DEVELOPMENT</span>
-            <br />
-            CORP.
+            <span className="text-[#E8A020]">FIX ALL</span>
           </h1>
+
+          {/* Service Highlight Badges */}
+          <div
+            className="flex flex-wrap gap-3 mb-6"
+            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.38s" }}
+          >
+            {serviceHighlights.map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="flex items-center gap-2 bg-[#E8A020]/10 border border-[#E8A020]/40 backdrop-blur-sm px-4 py-2"
+              >
+                <Icon size={14} className="text-[#E8A020] shrink-0" />
+                <span className="font-barlow font-bold text-[13px] tracking-[0.14em] text-[#E8A020]">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
 
           {/* Subtext */}
           <p
-            className="hero-subtext"
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "clamp(15px, 3vw, 18px)",
-              lineHeight: 1.65,
-              color: "rgba(255,255,255,0.80)",
-              maxWidth: "480px",
-              margin: "0 0 2rem",
-              fontWeight: 300,
-              animation: "fadeInUp 0.8s ease-out both",
-              animationDelay: "0.4s",
-            }}
+            className="hero-subtext font-dm text-[clamp(15px,3vw,18px)] leading-[1.65] text-white/80 max-w-[520px] mb-8 font-light"
+            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.5s" }}
           >
-            Mightybee Development Corp. delivers world-class construction and
-            development projects across Cebu — on time, on budget, and built to
-            last.
+            Your trusted partner for all types of home and property repairs in Cebu —
+            fast response, quality workmanship, and transparent pricing.
           </p>
 
           {/* CTAs */}
           <div
-            className="hero-cta-row"
-            style={{
-              display: "flex",
-              gap: "1rem",
-              flexWrap: "wrap",
-              animation: "fadeInUp 0.8s ease-out both",
-              animationDelay: "0.55s",
-            }}
+            className="hero-cta-row flex gap-4 flex-wrap"
+            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.62s" }}
           >
             <a
-              href="#projects"
+              href="#services"
               onClick={(e) => {
                 e.preventDefault();
-                document
-                  .querySelector("#projects")
-                  ?.scrollIntoView({ behavior: "smooth" });
+                document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" });
               }}
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 700,
-                fontSize: "clamp(13px, 3vw, 15px)",
-                letterSpacing: "0.12em",
-                background: "#E8A020",
-                color: "#111111",
-                padding: "15px 28px",
-                textDecoration: "none",
-                display: "inline-block",
-                transition: "background 0.2s, transform 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.background = "#F0B030";
-                el.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.background = "#E8A020";
-                el.style.transform = "translateY(0)";
-              }}
+              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-[#E8A020] text-[#111111] px-7 py-4 no-underline inline-block transition-all duration-200 hover:bg-[#F0B030] hover:-translate-y-[1px]"
             >
-              VIEW OUR PROJECTS
+              OUR SERVICES
             </a>
             <a
               href="#contact"
               onClick={(e) => {
                 e.preventDefault();
-                document
-                  .querySelector("#contact")
-                  ?.scrollIntoView({ behavior: "smooth" });
+                document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
               }}
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 700,
-                fontSize: "clamp(13px, 3vw, 15px)",
-                letterSpacing: "0.12em",
-                background: "transparent",
-                color: "#FFFFFF",
-                padding: "15px 28px",
-                textDecoration: "none",
-                display: "inline-block",
-                border: "2px solid rgba(255,255,255,0.5)",
-                transition: "border-color 0.2s, color 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.borderColor = "#E8A020";
-                el.style.color = "#E8A020";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.borderColor = "rgba(255,255,255,0.5)";
-                el.style.color = "#FFFFFF";
-              }}
+              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-white px-7 py-4 no-underline inline-block border-2 border-white/50 transition-all duration-200 hover:border-[#E8A020] hover:text-[#E8A020]"
             >
               GET A FREE QUOTE
             </a>
@@ -256,33 +150,11 @@ export function Hero() {
       {/* Scroll indicator */}
       <button
         onClick={scrollToAbout}
-        style={{
-          position: "absolute",
-          bottom: "2rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "none",
-          border: "none",
-          color: "rgba(255,255,255,0.6)",
-          cursor: "pointer",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "6px",
-          animation: "bounce 2s ease-in-out infinite",
-          zIndex: 2,
-        }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-transparent border-0 text-white/60 cursor-pointer flex flex-col items-center gap-[6px] z-10"
+        style={{ animation: "bounce2 2s ease-in-out infinite" }}
       >
-        <span
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "11px",
-            letterSpacing: "0.15em",
-            color: "rgba(255,255,255,0.5)",
-          }}
-        >
-          SCROLL
-        </span>
+        <style>{`@keyframes bounce2 { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }`}</style>
+        <span className="font-dm text-[11px] tracking-[0.15em] text-white/50">SCROLL</span>
         <ChevronDown size={20} />
       </button>
     </section>

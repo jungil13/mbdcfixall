@@ -47,7 +47,7 @@ const facilityServices = [
     description:
       'Fast, reliable repair solutions for residential and commercial properties — structural fixes, plumbing, electrical, flooring, and more. We respond quickly to minimize disruption.',
     items: ['Structural Repairs', 'Plumbing & Electrical', 'Flooring & Tiling', 'Roofing Repairs'],
-    image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=700&h=450&fit=crop&auto=format',
+    image: 'https://toplissolutions.com/wp-content/uploads/2024/07/tsi-rectification-hero-image-scaled.webp',
   },
   {
     icon: Settings,
@@ -55,7 +55,7 @@ const facilityServices = [
     description:
       'Comprehensive preventive and corrective maintenance programs that extend asset life, reduce costs, and keep your property performing at its best year-round.',
     items: ['Scheduled PM Programs', 'HVAC Maintenance', 'Building Systems Upkeep', 'Emergency Response'],
-    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=700&h=450&fit=crop&auto=format',
+    image: 'https://completemaintenanceexperts.com.au/wp-content/uploads/2024/11/restorations-services-sydney.webp',
   },
   {
     icon: Shield,
@@ -63,7 +63,7 @@ const facilityServices = [
     description:
       'End-to-end facility management for commercial and industrial properties — janitorial, landscaping, security coordination, and pest control under one trusted partner.',
     items: ['Janitorial & Sanitation', 'Landscaping & Grounds', 'Security & Access Control', 'Pest Management'],
-    image: 'https://images.unsplash.com/photo-1527515637462-cff94ebb7592?w=700&h=450&fit=crop&auto=format',
+    image: 'https://silagroup.co.in/wp-content/uploads/2023/06/fm-gallery-13-min.jpg',
   },
 ]
 
@@ -215,7 +215,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 }
 
 export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
-  const [activeTab, setActiveTab] = useState<ServiceCategory>('CONSTRUCTION')
+  const [activeTab, setActiveTab] = useState<ServiceCategory>('SERVICES')
 
   const useDynamic = dynamicServices && dynamicServices.length > 0
   
@@ -281,9 +281,9 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
                   margin: 0,
                 }}
               >
-                OUR CORE
+                REPAIR &
                 <br />
-                <span style={{ color: '#E8A020' }}>SERVICES</span>
+                <span style={{ color: '#E8A020' }}>MAINTENANCE</span>
               </h2>
               <p
                 style={{
@@ -296,8 +296,8 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
                   fontWeight: 300,
                 }}
               >
-                From residential homes to large-scale infrastructure — and now
-                including property repair, maintenance, and facility management.
+                Specializing in all types of home and property repairs —
+                property repair, maintenance programs, and full facility management services.
               </p>
             </div>
           </div>
@@ -316,7 +316,7 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
               WebkitOverflowScrolling: 'touch' as any,
             }}
           >
-            {(['CONSTRUCTION', 'SERVICES'] as ServiceCategory[]).map((tab) => (
+            {([{ key: 'SERVICES', label: 'REPAIR & MAINTENANCE' }, { key: 'CONSTRUCTION', label: 'CONSTRUCTION' }] as { key: ServiceCategory; label: string }[]).map(({ key: tab, label }) => (
               <button
                 key={tab}
                 id={`services-tab-${tab.toLowerCase()}`}
@@ -335,7 +335,7 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
                   whiteSpace: 'nowrap',
                 }}
               >
-                {tab}
+                {label}
               </button>
             ))}
           </div>

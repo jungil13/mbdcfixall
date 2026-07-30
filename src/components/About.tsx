@@ -1,73 +1,29 @@
-import { AnimatedSection } from './AnimatedSection'
+﻿import { AnimatedSection } from "./AnimatedSection";
 
 export function About() {
   return (
     <section
       id="about"
-      className="section-padded"
-      style={{
-        background: '#111111',
-        padding: '7rem 1.25rem',
-      }}
+      className="section-padded bg-[#111111] py-28 px-5"
     >
-      <div
-        style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '5rem',
-          alignItems: 'center',
-        }}
-        className="about-grid"
-      >
+      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center about-grid">
         {/* Image column */}
         <AnimatedSection variant="left">
-          <div style={{ position: 'relative' }}>
+          <div className="relative">
             <img
-              src="https://images.unsplash.com/photo-1587582423116-ec07293f0395?w=800&h=960&fit=crop&auto=format"
-              alt="Construction worker in hard hat on a building frame"
-              style={{
-                width: '100%',
-                height: 'clamp(320px, 45vw, 520px)',
-                objectFit: 'cover',
-                display: 'block',
-              }}
+              src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1031&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Professional repair technician working on property"
+              className="w-full object-cover block"
+              style={{ height: "clamp(320px, 45vw, 520px)" }}
             />
             {/* Stats badge */}
             <div
-              className="about-stats-badge"
-              style={{
-                position: 'absolute',
-                bottom: '-2rem',
-                right: '-2rem',
-                background: '#E8A020',
-                padding: '2rem',
-                width: '160px',
-                textAlign: 'center',
-              }}
+              className="about-stats-badge absolute -bottom-8 -right-8 bg-[#E8A020] p-8 w-40 text-center"
             >
-              <div
-                style={{
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 900,
-                  fontSize: '52px',
-                  color: '#111111',
-                  lineHeight: 1,
-                }}
-              >
+              <div className="font-barlow font-black text-[52px] text-[#111111] leading-none">
                 25+
               </div>
-              <div
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: '12px',
-                  color: '#111111',
-                  fontWeight: 600,
-                  letterSpacing: '0.05em',
-                  marginTop: '4px',
-                }}
-              >
+              <div className="font-dm text-[12px] text-[#111111] font-semibold tracking-[0.05em] mt-1">
                 YEARS OF EXCELLENCE
               </div>
             </div>
@@ -77,113 +33,55 @@ export function About() {
         {/* Text column */}
         <AnimatedSection variant="right" delay={150}>
           <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                marginBottom: '1.25rem',
-              }}
-            >
-              <div style={{ width: '32px', height: '2px', background: '#E8A020' }} />
-              <span
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: '12px',
-                  letterSpacing: '0.18em',
-                  color: '#E8A020',
-                  fontWeight: 500,
-                }}
-              >
+            <div className="flex items-center gap-[10px] mb-5">
+              <div className="w-8 h-[2px] bg-[#E8A020]" />
+              <span className="font-dm text-[12px] tracking-[0.18em] text-[#E8A020] font-medium">
                 WHO WE ARE
               </span>
             </div>
 
-            <h2
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 800,
-                fontSize: 'clamp(30px, 4vw, 54px)',
-                lineHeight: 1.05,
-                color: '#FFFFFF',
-                textTransform: 'uppercase',
-                margin: '0 0 1.25rem',
-              }}
-            >
-              CEBU&apos;S MOST
+            <h2 className="font-barlow font-extrabold text-[clamp(30px,4vw,54px)] leading-[1.05] text-white uppercase mb-5">
+              CEBU&apos;S GO-TO
               <br />
-              <span style={{ color: '#E8A020' }}>TRUSTED</span> BUILDER
+              <span className="text-[#E8A020]">REPAIR</span> SPECIALISTS
             </h2>
 
-            <p
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 'clamp(14px, 1.8vw, 16px)',
-                lineHeight: 1.75,
-                color: 'rgba(255,255,255,0.70)',
-                margin: '0 0 1.25rem',
-                fontWeight: 300,
-              }}
-            >
-              Founded in 1999, Mightybee Development Corp. has grown from a small
-              contracting firm into one of Cebu&apos;s most respected construction
-              and development companies. We serve the entire Cebu province —
-              from Cebu City to the surrounding municipalities.
+            <p className="font-dm text-[clamp(14px,1.8vw,16px)] leading-[1.75] text-white/70 mb-5 font-light">
+              Founded in 1999, MBDC FIX ALL has grown into Cebu&apos;s most trusted
+              property repair and facility services company. We handle all types of home
+              and commercial repairs — from minor fixes to major renovations — serving
+              Cebu City and the surrounding municipalities.
             </p>
 
-            <p
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 'clamp(14px, 1.8vw, 16px)',
-                lineHeight: 1.75,
-                color: 'rgba(255,255,255,0.70)',
-                margin: '0 0 2rem',
-                fontWeight: 300,
-              }}
-            >
-              Our team of licensed engineers, architects, and skilled tradespeople
-              brings precision, integrity, and Filipino craftsmanship to every
-              project — from single-family homes to large commercial complexes.
+            <p className="font-dm text-[clamp(14px,1.8vw,16px)] leading-[1.75] text-white/70 mb-8 font-light">
+              Our team of licensed engineers, skilled tradespeople, and responsive
+              service teams bring speed, precision, and Filipino craftsmanship to every
+              repair job — so you can get back to normal, fast.
             </p>
 
-            {/* Key values */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {/* Key service pillars */}
+            <div className="flex flex-col gap-4">
               {[
-                { label: 'Integrity', desc: 'Transparent dealings and honest timelines.' },
-                { label: 'Quality', desc: 'Grade-A materials and rigorous quality control.' },
-                { label: 'Safety', desc: 'DOLE-compliant jobsites, zero-compromise safety.' },
-              ].map((v, i) => (
-                <div key={v.label} style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                  <div
-                    style={{
-                      width: '4px',
-                      height: '4px',
-                      borderRadius: '50%',
-                      background: '#E8A020',
-                      marginTop: '9px',
-                      flexShrink: 0,
-                    }}
-                  />
+                {
+                  label: "Property Repair",
+                  desc: "Structural, plumbing, electrical, flooring, roofing — all handled.",
+                },
+                {
+                  label: "Maintenance",
+                  desc: "Scheduled and preventive programs to keep your property in top shape.",
+                },
+                {
+                  label: "Facility Services",
+                  desc: "End-to-end facility management for homes and commercial properties.",
+                },
+              ].map((v) => (
+                <div key={v.label} className="flex items-start gap-4">
+                  <div className="w-1 h-1 rounded-full bg-[#E8A020] mt-[9px] shrink-0" />
                   <div>
-                    <span
-                      style={{
-                        fontFamily: "'Barlow Condensed', sans-serif",
-                        fontWeight: 700,
-                        fontSize: '16px',
-                        color: '#FFFFFF',
-                        letterSpacing: '0.05em',
-                      }}
-                    >
+                    <span className="font-barlow font-bold text-[16px] text-white tracking-[0.05em]">
                       {v.label}
                     </span>
-                    <span
-                      style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '14px',
-                        color: 'rgba(255,255,255,0.55)',
-                        marginLeft: '8px',
-                      }}
-                    >
+                    <span className="font-dm text-[14px] text-white/55 ml-2">
                       — {v.desc}
                     </span>
                   </div>
@@ -194,5 +92,5 @@ export function About() {
         </AnimatedSection>
       </div>
     </section>
-  )
+  );
 }

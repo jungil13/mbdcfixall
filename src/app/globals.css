@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Google Fonts are loaded via <link> in layout.tsx */
 
 
@@ -20,6 +24,12 @@ body {
   -ms-overflow-style: none;
 }
 
+@media (max-width: 1024px) {
+  body {
+    padding-bottom: 64px; /* Space for mobile bottom navigation */
+  }
+}
+
 body::-webkit-scrollbar {
   display: none;
 }
@@ -35,12 +45,9 @@ textarea::placeholder {
   opacity: 1;
 }
 
-/* ── Shared layout helpers ── */
-.mobile-menu-btn { display: none; }
+/* ── Shared layout helpers (legacy — handled by Tailwind responsive prefixes) ── */
+/* .mobile-menu-btn and .navbar-desktop-nav are now controlled via Tailwind lg: classes */
 
-@media (max-width: 900px) {
-  .mobile-menu-btn { display: block !important; }
-}
 
 /* ── Scroll Animations ── */
 @keyframes bounce {
@@ -122,8 +129,6 @@ textarea::placeholder {
   .form-row          { grid-template-columns: 1fr !important; }
   .footer-grid       { grid-template-columns: 1fr 1fr !important; }
   .why-grid          { grid-template-columns: repeat(2, 1fr) !important; }
-  .navbar-desktop-nav { display: none !important; }
-  .navbar-phone      { display: none !important; }
   .hero-cta-row      { flex-direction: column !important; align-items: flex-start !important; }
   .hero-cta-row a    { width: 100% !important; text-align: center !important; }
   .projects-filter-wrap { flex-wrap: wrap !important; width: 100% !important; }
