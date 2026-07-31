@@ -136,16 +136,6 @@ export function Hero() {
             >
               START YOUR PROJECT
             </a>
-            {!isStandalone && (
-              <a
-                href="/MBDC%20FIX%20ALL.apk"
-                download="MBDC FIX ALL.apk"
-                className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-[#E8A020] px-7 py-4 no-underline flex items-center gap-2 border-2 border-[#E8A020] transition-all duration-200 hover:bg-[#E8A020] hover:text-[#111111]"
-              >
-                <Download size={18} />
-                DOWNLOAD APK
-              </a>
-            )}
           </div>
         </div>
       </div>
