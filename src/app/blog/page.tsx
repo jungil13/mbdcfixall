@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
@@ -6,6 +7,14 @@ import { Footer } from '@/components/Footer'
 import { format } from 'date-fns'
 import { AnimatedSection } from '@/components/AnimatedSection'
 import { ArrowRight } from 'lucide-react'
+import { JsonLd } from '@/components/SEO/JsonLd'
+import { generateBreadcrumbSchema, SITE_URL } from '@/lib/seo'
+
+export const metadata: Metadata = {
+  title: 'Blog & Updates',
+  description: 'Read the latest updates, repair tips, and company news from MBDC FIX ALL in Cebu.',
+  alternates: { canonical: `${SITE_URL}/blog` }
+}
 
 export const revalidate = 0
 

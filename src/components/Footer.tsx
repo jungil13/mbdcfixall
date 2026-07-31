@@ -17,7 +17,7 @@ const footerLinks: Record<string, { label: string; href: string; external?: bool
     { label: "About Us", href: "#about" },
     { label: "Our Projects", href: "#projects" },
     { label: "Services", href: "#services" },
-    { label: "Blog & Updates", href: "/blog" },
+    { label: "Blog & Updates", href: "#blog" },
   ],
   Services: [
     { label: "Property Repair", href: "#services" },
@@ -32,7 +32,7 @@ const footerLinks: Record<string, { label: string; href: string; external?: bool
   ],
   Support: [
     { label: "Get a Quote", href: "#contact" },
-    { label: "Team", href: "/team" },
+    { label: "Team", href: "#team" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
   ],

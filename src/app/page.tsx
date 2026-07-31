@@ -11,6 +11,15 @@ import { Team } from '@/components/Team'
 import { FeaturedBlogs } from '@/components/FeaturedBlogs'
 import { Contact } from '@/components/Contact'
 import { Footer } from '@/components/Footer'
+import { JsonLd } from '@/components/SEO/JsonLd'
+import { generateLocalBusinessSchema, generateOrganizationSchema, generateWebsiteSchema, generateFAQSchema } from '@/lib/seo'
+
+const faqs = [
+  { question: "What property repair services do you offer in Cebu?", answer: "We offer comprehensive property repair including structural, plumbing, electrical, flooring, and roofing." },
+  { question: "Do you provide emergency repairs?", answer: "Yes, our team is responsive and equipped to handle urgent repair requirements across Cebu." },
+  { question: "Do you serve residential and commercial properties?", answer: "Yes, we handle all types of home and commercial repairs, from minor fixes to major renovations and facility management." },
+  { question: "How can I request a quotation?", answer: "You can request a free quote by contacting us via our website form, or by calling our customer service hotline at (032) 342 2202." }
+]
 
 export const revalidate = 0 // fetch fresh data
 
@@ -36,6 +45,11 @@ export default async function Home() {
 
   return (
     <main style={{ overflowX: 'hidden' }}>
+      <JsonLd schema={generateLocalBusinessSchema()} />
+      <JsonLd schema={generateOrganizationSchema()} />
+      <JsonLd schema={generateWebsiteSchema()} />
+      <JsonLd schema={generateFAQSchema(faqs)} />
+
       <Navbar />
       
       <Hero />

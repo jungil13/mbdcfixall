@@ -16,7 +16,7 @@ export function Hero() {
     <section className="relative h-svh min-h-[560px] pt-[80px] lg:pt-[100px] pb-10 flex items-center overflow-hidden bg-[#1a1a1a]">
       {/* Background image */}
       <img
-        src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        src="https://previews.dropbox.com/p/thumb/ADFu83lbLdpkO1hnCw0_iHN6O0xDTPAOQ_5Y-Pa-EpHpeiZ1kfzXrqVdgeti-m0_siYSPSP2tFbwws8EQfqtEW2MOLbD-BiXFAmLCfMnszNu7FiNKa54xe1BVI1FnkH8vUI-2FzxY9emmQChaMsSSwo3xc8Q9Cgd95Z5LbKgH_31oYpKCz0FP6iB5lAOgzkVsVrB0Oy98-IakPaBT7BU4BzWIWIxjNoOWi32UOETeg1lCAqGcFDmGn_d5MOjI2Rz-zCztdCX9cexa1wXgUSSTb_cJjtmWikapCLeH6mEwMmAyA/p.png"
         alt="Professional home repair technician at work"
         className="absolute inset-0 w-full h-full object-cover object-center"
       />

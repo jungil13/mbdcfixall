@@ -12,9 +12,33 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "MBDC FIX ALL | Cebu Construction & Facility Services",
+  metadataBase: new URL("https://mbdcfixall.com"),
+  title: {
+    default: "Property Repair & Maintenance Services in Cebu | MBDC FIX ALL",
+    template: "%s | MBDC FIX ALL",
+  },
   description:
-    "MBDC FIX ALL delivers world-class construction, property repair, maintenance, and facility services across Cebu — on time, on budget, and built to last.",
+    "MBDC FIX ALL provides trusted property repair, home maintenance, and facility services across Cebu. Fast response, skilled professionals, and transparent pricing.",
+  keywords: [
+    "property repair Cebu",
+    "home repair Cebu",
+    "handyman Cebu",
+    "maintenance services Cebu",
+    "facility services Cebu",
+    "building maintenance Cebu",
+    "plumbing services Cebu",
+    "electrical repair Cebu",
+    "carpentry services Cebu",
+    "painting services Cebu",
+    "roof repair Cebu",
+    "home renovation Cebu",
+    "commercial maintenance Cebu",
+    "property maintenance Cebu",
+    "MBDC FIX ALL",
+  ],
+  alternates: {
+    canonical: "/",
+  },
   robots: "index, follow",
   manifest: "/manifest.json",
   icons: {
@@ -27,11 +51,28 @@ export const metadata: Metadata = {
     title: "MBDC FIX ALL",
   },
   openGraph: {
-    title: "MBDC FIX ALL",
+    title: "Property Repair & Maintenance Services in Cebu | MBDC FIX ALL",
     description:
-      "Cebu's trusted builder and facility services provider since 1999.",
+      "MBDC FIX ALL provides trusted property repair, home maintenance, and facility services across Cebu. Fast response, skilled professionals, and transparent pricing.",
     type: "website",
     locale: "en_PH",
+    url: "https://mbdcfixall.com",
+    siteName: "MBDC FIX ALL",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1200&auto=format&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "MBDC FIX ALL Property Repair Cebu",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Property Repair & Maintenance Services in Cebu | MBDC FIX ALL",
+    description:
+      "MBDC FIX ALL provides trusted property repair, home maintenance, and facility services across Cebu. Fast response, skilled professionals, and transparent pricing.",
+    images: ["https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1200&auto=format&fit=crop"],
   },
 };
 

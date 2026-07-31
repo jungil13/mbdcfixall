@@ -11,7 +11,7 @@ export function About() {
         <AnimatedSection variant="left">
           <div className="relative">
             <img
-              src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1031&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src="https://bsbpropertiesinc.com/wp-content/uploads/2023/10/banner-1.jpg"
               alt="Professional repair technician working on property"
               className="w-full object-cover block"
               style={{ height: "clamp(320px, 45vw, 520px)" }}

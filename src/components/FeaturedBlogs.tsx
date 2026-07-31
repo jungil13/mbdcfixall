@@ -8,7 +8,7 @@ export function FeaturedBlogs({ blogs }: { blogs: any[] }) {
   if (!blogs || blogs.length === 0) return null
 
   return (
-    <section className="section-padded" style={{ background: '#111111', padding: '7rem 1.25rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+    <section id="blog" className="section-padded" style={{ background: '#111111', padding: '7rem 1.25rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         
         <AnimatedSection>
