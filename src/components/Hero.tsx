@@ -1,5 +1,6 @@
 "use client";
-import { ChevronDown, Hammer, Settings, Shield } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronDown, Hammer, Settings, Shield, Smartphone } from "lucide-react";
 
 const serviceHighlights = [
   { icon: Hammer, label: "PROPERTY REPAIR" },
@@ -8,6 +9,17 @@ const serviceHighlights = [
 ];
 
 export function Hero() {
+  const [isStandalone, setIsStandalone] = useState(true);
+
+  useEffect(() => {
+    const checkStandalone = () => {
+      const match = window.matchMedia("(display-mode: standalone)").matches ||
+        (window.navigator as any).standalone === true;
+      setIsStandalone(match);
+    };
+    checkStandalone();
+  }, []);
+
   const scrollToAbout = () => {
     document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -49,8 +61,8 @@ export function Hero() {
       <div className="absolute left-0 top-0 bottom-0 w-[5px] bg-[#E8A020]" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-[1280px] mx-auto px-5 w-full">
-        <div className="max-w-[800px]">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-5 w-full flex flex-col lg:flex-row items-center justify-between gap-12">
+        <div className="max-w-[700px]">
           {/* Label */}
           <div
             className="inline-flex items-center gap-[10px] mb-5"
@@ -124,9 +136,110 @@ export function Hero() {
             >
               GET A FREE QUOTE
             </a>
+            {!isStandalone && (
+              <button
+                onClick={() => {
+                  window.dispatchEvent(new Event("trigger-pwa-install"));
+                }}
+                className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-[#E8A020] px-7 py-4 no-underline flex items-center gap-2 border-2 border-[#E8A020] transition-all duration-200 hover:bg-[#E8A020] hover:text-[#111111]"
+              >
+                <Smartphone size={18} />
+                DOWNLOAD APP
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Mockup on the right (only visible on large screens when not installed) */}
+        {!isStandalone && (
+          <div className="hidden lg:block relative z-10 w-[220px] xl:w-[260px] shrink-0 transform rotate-[-2deg] transition-transform hover:rotate-0 duration-500" style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.4s" }}>
+            {/* Phone Frame */}
+            <div className="relative w-full aspect-[1/2] bg-black rounded-[2.5rem] border-[6px] border-zinc-800 shadow-2xl overflow-hidden flex flex-col">
+              {/* Notch */}
+              <div className="absolute top-0 inset-x-0 h-5 bg-zinc-800 rounded-b-2xl w-32 mx-auto z-20"></div>
+              
+              {/* Screen Content - Mimicking the app UI */}
+              <div className="flex-1 bg-[#111111] w-full flex flex-col pt-10 px-4 relative overflow-hidden">
+                {/* Background image overlay */}
+                <img src="/hero-bg.jpg" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" alt="" />
+                
+                <div className="relative z-10 flex-1 flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-6">
+                    <img src="/mightyb_logo.png" className="w-8 h-8 object-contain" alt="" />
+                    <div className="font-barlow font-extrabold text-white text-lg leading-[0.9] uppercase tracking-wider">
+                      MBDC<br/><span className="text-[#E8A020]">FIX ALL</span>
+                    </div>
+                  </div>
+                  
+                  {/* Buttons mimic */}
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    <div className="h-8 border border-[#E8A020]/40 rounded bg-[#E8A020]/10 text-[#E8A020] text-[9px] font-barlow font-bold flex items-center justify-center uppercase tracking-widest">
+                      Repair
+                    </div>
+                    <div className="h-8 border border-[#E8A020]/40 rounded bg-[#E8A020]/10 text-[#E8A020] text-[9px] font-barlow font-bold flex items-center justify-center uppercase tracking-widest">
+                      Maintenance
+                    </div>
+                  </div>
+                  <div className="h-8 border border-[#E8A020]/40 rounded bg-[#E8A020]/10 text-[#E8A020] text-[9px] font-barlow font-bold flex items-center justify-center uppercase tracking-widest mb-6 w-2/3">
+                    Facility Services
+                  </div>
+                  
+                  {/* Text mimic */}
+                  <div className="space-y-2 mb-8">
+                    <div className="h-1.5 bg-white/40 rounded w-full"></div>
+                    <div className="h-1.5 bg-white/40 rounded w-11/12"></div>
+                    <div className="h-1.5 bg-white/40 rounded w-4/5"></div>
+                    <div className="h-1.5 bg-white/40 rounded w-2/3"></div>
+                  </div>
+                  
+                  {/* Action buttons mimic */}
+                  <div className="mt-auto pb-20 space-y-3">
+                    <div className="h-10 bg-[#E8A020] rounded w-full flex items-center justify-center text-black font-barlow font-bold text-[11px] tracking-widest">
+                      OUR SERVICES
+                    </div>
+                    <div className="h-10 border border-white/30 rounded w-full flex items-center justify-center text-white font-barlow font-bold text-[11px] tracking-widest">
+                      GET A QUOTE
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Nav */}
+                <div className="absolute bottom-0 inset-x-0 h-14 bg-[#1a1a1a] border-t border-white/10 flex items-center justify-around px-2 z-20">
+                  <div className="w-8 h-8 rounded-md bg-[#E8A020]/20 flex flex-col items-center justify-center gap-0.5">
+                    <div className="w-3.5 h-3.5 bg-[#E8A020] rounded-[3px]"></div>
+                    <div className="w-4 h-0.5 bg-[#E8A020] rounded-full opacity-60"></div>
+                  </div>
+                  <div className="w-8 h-8 rounded-md flex flex-col items-center justify-center gap-0.5 opacity-40">
+                    <div className="w-3.5 h-3.5 border-2 border-white rounded-[3px]"></div>
+                    <div className="w-4 h-0.5 bg-white rounded-full"></div>
+                  </div>
+                  <div className="w-8 h-8 rounded-md flex flex-col items-center justify-center gap-0.5 opacity-40">
+                    <div className="w-4 h-3 border-2 border-white rounded-sm"></div>
+                    <div className="w-4 h-0.5 bg-white rounded-full"></div>
+                  </div>
+                  <div className="w-8 h-8 rounded-md flex flex-col items-center justify-center gap-0.5 opacity-40">
+                    <div className="w-3.5 h-3.5 border-2 border-white rounded-full"></div>
+                    <div className="w-4 h-0.5 bg-white rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Download Badge */}
+            <div className="absolute -bottom-4 -left-6 bg-[#1a1a1a] border border-[#E8A020]/30 shadow-xl rounded-xl p-3 flex items-center gap-3 z-30 animate-bounce">
+              <div className="bg-[#E8A020] rounded-lg w-10 h-10 flex items-center justify-center text-black">
+                <Smartphone size={20} />
+              </div>
+              <div className="pr-2">
+                <div className="text-white font-barlow font-bold text-sm leading-tight uppercase">Install App</div>
+                <div className="text-zinc-400 font-dm text-[10px] tracking-wide uppercase">Fast & Secure</div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
 
       {/* Scroll indicator */}
       <button

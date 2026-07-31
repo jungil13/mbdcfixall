@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 
 export default function AppSplashScreen() {
-  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [shouldShow, setShouldShow] = useState(false);
 
   useEffect(() => {
     // Only show on mobile screen widths or PWA standalone mode
@@ -14,45 +15,93 @@ export default function AppSplashScreen() {
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone === true;
 
-    if (!isMobile && !isStandalone) return; // Desktop browser — skip entirely
+    if (!isMobile && !isStandalone) {
+      setLoading(false);
+      return;
+    }
+    
+    setShouldShow(true);
 
-    setShow(true);
+    // Progress bar animation
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 15;
+      });
+    }, 100);
 
+    // Hide splash screen after 1.3s
     const timer = setTimeout(() => {
       setFadeOut(true);
-      setTimeout(() => setVisible(false), 600);
-    }, 2200);
+      setTimeout(() => {
+        setLoading(false);
+      }, 400); // match transition duration
+    }, 1300);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
   }, []);
 
-  if (!show || !visible) return null;
+  if (!loading || !shouldShow) return null;
 
   return (
     <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 99999,
-        background: "#0A0A0A",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        transition: "opacity 0.6s ease-out",
-        opacity: fadeOut ? 0 : 1,
-        pointerEvents: fadeOut ? "none" : "auto",
-      }}
+      className={`fixed inset-0 z-[99999] bg-[#0A0A0A] flex flex-col items-center justify-between p-8 transition-opacity duration-400 ease-out select-none ${
+        fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
     >
-      <img
-        src="/splash-logo.png"
-        alt="MBDC FIX ALL"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "center",
-        }}
-      />
+      {/* Background ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#E8A020]/15 rounded-full blur-[90px] pointer-events-none" />
+
+      {/* Top spacer */}
+      <div className="w-full flex justify-between items-center text-xs font-barlow tracking-widest text-zinc-600 uppercase">
+        <span>EST. 1999</span>
+        <span>CEBU, PH</span>
+      </div>
+
+      {/* Main Center Branding */}
+      <div className="flex flex-col items-center justify-center text-center relative z-10 my-auto">
+        <div className="relative mb-6 group hidden sm:block">
+          {/* Pulsing ring around logo */}
+          <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-[#E8A020] via-yellow-500 to-[#E8A020] opacity-40 blur-md animate-pulse" />
+          
+          <div className="relative w-24 h-24 sm:w-28 sm:h-28 bg-[#111111] border-2 border-[#E8A020] rounded-2xl p-3 shadow-[0_0_40px_rgba(232,160,32,0.3)] flex items-center justify-center">
+            <img
+              src="/mightyb_logo.png"
+              alt="MBDC FIX ALL Logo"
+              className="w-full h-full object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] animate-pulse"
+            />
+          </div>
+        </div>
+
+        <h1 className="font-barlow font-extrabold text-3xl sm:text-4xl text-white tracking-[0.06em] leading-none mb-2">
+          MBDC <span className="text-[#E8A020]">FIX ALL</span>
+        </h1>
+        <p className="font-dm text-xs sm:text-sm text-zinc-400 tracking-[0.2em] uppercase max-w-xs font-medium">
+          Home Repairs & Construction
+        </p>
+      </div>
+
+      {/* Bottom Progress & Footer */}
+      <div className="w-full max-w-xs flex flex-col items-center gap-4 relative z-10 mb-4">
+        {/* Progress Bar Container */}
+        <div className="w-full h-[3px] bg-zinc-800 rounded-full overflow-hidden relative">
+          <div
+            className="h-full bg-gradient-to-r from-[#E8A020] via-amber-400 to-[#E8A020] transition-all duration-150 ease-out shadow-[0_0_10px_#E8A020]"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        <div className="flex items-center justify-between w-full text-[11px] font-dm text-zinc-500">
+          <span>Loading app...</span>
+          <span className="text-[#E8A020] font-mono font-semibold">{progress}%</span>
+        </div>
+      </div>
     </div>
   );
 }
