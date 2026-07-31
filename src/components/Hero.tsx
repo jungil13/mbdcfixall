@@ -134,7 +134,7 @@ export function Hero() {
               }}
               className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-white px-7 py-4 no-underline inline-block border-2 border-white/50 transition-all duration-200 hover:border-[#E8A020] hover:text-[#E8A020]"
             >
-              GET A FREE QUOTE
+              START YOUR PROJECT
             </a>
           </div>
         </div>
