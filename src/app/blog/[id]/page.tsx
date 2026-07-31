@@ -8,6 +8,7 @@ import { Footer } from '@/components/Footer'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import { AnimatedSection } from '@/components/AnimatedSection'
+import { BlogPostSkeleton } from '@/components/Skeleton'
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
   const [blog, setBlog] = useState<any>(null)
@@ -70,9 +71,11 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
 
   if (loading) {
     return (
-      <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F2EFE8' }}>
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E8A020]"></div>
-      </main>
+      <>
+        <Navbar />
+        <BlogPostSkeleton />
+        <Footer />
+      </>
     )
   }
   

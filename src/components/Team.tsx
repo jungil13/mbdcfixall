@@ -1,9 +1,10 @@
 'use client'
 
 import { AnimatedSection } from './AnimatedSection'
+import { TeamSectionSkeleton } from './Skeleton'
 
 export function Team({ members }: { members: any[] }) {
-  if (!members || members.length === 0) return null
+  if (!members || members.length === 0) return <TeamSectionSkeleton />
 
   const loopMembers = [...members, ...members, ...members]
 

@@ -14,13 +14,13 @@ export function Hero() {
 
   return (
     <section className="relative h-svh min-h-[560px] pt-[80px] lg:pt-[100px] pb-10 flex items-center overflow-hidden bg-[#1a1a1a]">
-      {/* Background image */}
+      {/* Background image - local file for reliability on all devices */}
       <img
-        src="https://previews.dropbox.com/p/thumb/ADE9jRm-sHlJNyt9WqbZ2ykoeeoMBGavGSBpuRGj6Lu60O8xqN-337p_Ao39VU0VEnyRsjZQr1xhZIMYRqfxHEwqNq4pnBIKcaiWan7XI00Z1QqK9aGjvLNx5_CxHpfiQ3XehJswC4hmwtxTlhZDug2etrZT7mvR36BJJlL8PqnCaLyNRCRvLqWi0I_ILK_ihrnH3ea6rigeJv-9oPBVLydbDmE9a6RA8X8HqbFdvI_HSDWUh4-zgisGDbt4uvVUxLJvzXNCJaoSgiKKVtGZW-GxA7eKcUijUzqn4xH4hcdtAgK03KQKx59AlKGWX5kdA6cXCjUa7c2vgmV7Gso-bOPr3hd9ihZD8BJ2vNd-HI46_g/p.png"
-        alt="Professional home repair technician at work"
-        className="absolute inset-0 w-full h-full object-cover object-center"
+        src="/hero-bg.jpg"
+        alt="Professional home repair and construction work in Cebu"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ objectPosition: 'right center' }}
       />
-  
       {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.70)_55%,rgba(0,0,0,0.35)_100%)]" />
 

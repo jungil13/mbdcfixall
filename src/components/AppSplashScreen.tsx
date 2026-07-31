@@ -37,7 +37,7 @@ export default function AppSplashScreen() {
 
   return (
     <div
-      className={`fixed inset-0 z-[99999] bg-[#0A0A0A] flex flex-col items-center justify-between p-8 transition-opacity duration-400 ease-out select-none ${
+      className={`fixed inset-0 z-[99999] bg-[#0A0A0A] hidden sm:flex flex-col items-center justify-between p-8 transition-opacity duration-400 ease-out select-none ${
         fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >

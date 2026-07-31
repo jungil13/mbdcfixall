@@ -3,9 +3,10 @@
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { AnimatedSection } from './AnimatedSection'
+import { FeaturedBlogsSkeleton } from './Skeleton'
 
 export function FeaturedBlogs({ blogs }: { blogs: any[] }) {
-  if (!blogs || blogs.length === 0) return null
+  if (!blogs || blogs.length === 0) return <FeaturedBlogsSkeleton />
 
   return (
     <section id="blog" className="section-padded" style={{ background: '#111111', padding: '7rem 1.25rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
