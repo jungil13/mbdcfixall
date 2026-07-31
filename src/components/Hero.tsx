@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { ChevronDown, Hammer, Settings, Shield, Smartphone } from "lucide-react";
+import { ChevronDown, Hammer, Settings, Shield, Smartphone, Download } from "lucide-react";
 
 const serviceHighlights = [
   { icon: Hammer, label: "PROPERTY REPAIR" },
@@ -215,16 +215,15 @@ export function Hero() {
               </div>
             </div>
             
-            {/* Download Badge */}
-            <div className="absolute -bottom-4 -left-6 bg-[#1a1a1a] border border-[#E8A020]/30 shadow-xl rounded-xl p-3 flex items-center gap-3 z-30 animate-bounce">
-              <div className="bg-[#E8A020] rounded-lg w-10 h-10 flex items-center justify-center text-black">
-                <Smartphone size={20} />
-              </div>
-              <div className="pr-2">
-                <div className="text-white font-barlow font-bold text-sm leading-tight uppercase">Install App</div>
-                <div className="text-zinc-400 font-dm text-[10px] tracking-wide uppercase">Fast & Secure</div>
-              </div>
-            </div>
+            {/* APK Download Button */}
+            <a
+              href="/MBDC%20FIX%20ALL.apk"
+              download="MBDC FIX ALL.apk"
+              className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-48 bg-[#E8A020] text-black font-barlow font-bold text-[13px] tracking-wider uppercase py-3.5 px-4 rounded-xl shadow-[0_10px_30px_rgba(232,160,32,0.4)] hover:bg-[#F0B030] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 z-30"
+            >
+              <Download size={18} />
+              DOWNLOAD APK
+            </a>
           </div>
         )}
       </div>
