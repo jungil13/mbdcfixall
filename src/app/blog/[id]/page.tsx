@@ -91,19 +91,19 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <main style={{ background: '#F2EFE8', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <main style={{ background: '#111111', color: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
       
       <div style={{ flex: 1, paddingTop: '72px' }}>
         {/* Massive Hero Section */}
         <AnimatedSection>
-          <div style={{ width: '100%', height: 'clamp(320px, 60vw, 70vh)', minHeight: '340px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '100%', height: 'clamp(320px, 50vw, 60vh)', minHeight: '340px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {blog.image_url ? (
               <img src={blog.image_url} alt={blog.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
               <div style={{ position: 'absolute', inset: 0, background: '#111' }} />
             )}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(17,17,17,0.3) 0%, rgba(17,17,17,0.85) 100%)' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(17,17,17,0.4) 0%, rgba(17,17,17,0.95) 100%)' }} />
             
             <div style={{ position: 'relative', zIndex: 10, maxWidth: '900px', width: '100%', padding: '0 1.25rem', textAlign: 'center', marginTop: 'clamp(2rem, 8vw, 10vh)' }}>
               <Link
@@ -121,7 +121,7 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                 <span>MIGHTYBEE INSIGHTS</span>
               </div>
               
-              <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: 'clamp(28px, 5.5vw, 72px)', lineHeight: 1.05, color: '#FFFFFF', margin: '0 0 1.5rem', textTransform: 'uppercase', textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
+              <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: 'clamp(28px, 5.5vw, 68px)', lineHeight: 1.05, color: '#FFFFFF', margin: '0 0 1.5rem', textTransform: 'uppercase', textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
                 {blog.title}
               </h1>
             </div>
@@ -129,40 +129,38 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
         </AnimatedSection>
 
         {/* Article Body */}
-        <div style={{ maxWidth: '840px', margin: '0 auto', padding: '0 1.25rem', position: 'relative', zIndex: 20, marginTop: 'clamp(-2rem, -4vw, -5vh)' }}>
+        <div style={{ maxWidth: '840px', margin: '0 auto', padding: '0 1.25rem', position: 'relative', zIndex: 20, marginTop: 'clamp(-2rem, -4vw, -4vh)' }}>
           
           <AnimatedSection delay={200}>
-            <div style={{ background: '#FFFFFF', padding: 'clamp(1.5rem, 5vw, 5rem)', borderRadius: '16px', boxShadow: '0 24px 48px rgba(0,0,0,0.06)', marginBottom: '3rem' }}>
+            <div style={{ background: '#181818', border: '1px solid rgba(255,255,255,0.08)', padding: 'clamp(1.5rem, 5vw, 4rem)', borderRadius: '16px', boxShadow: '0 24px 48px rgba(0,0,0,0.3)', marginBottom: '3rem' }}>
               
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(16px, 2vw, 22px)', color: '#444', lineHeight: 1.7, margin: '0 0 2.5rem', fontWeight: 400, fontStyle: 'italic', borderLeft: '4px solid #E8A020', paddingLeft: '1.25rem' }}>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(16px, 2vw, 21px)', color: 'rgba(255,255,255,0.85)', lineHeight: 1.7, margin: '0 0 2.5rem', fontWeight: 400, fontStyle: 'italic', borderLeft: '4px solid #E8A020', paddingLeft: '1.25rem' }}>
                 {blog.subheading}
               </p>
 
               {/* Dynamic Content Body */}
               <div 
                 className="article-body"
-                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(15px, 1.8vw, 17px)', color: '#222', lineHeight: 1.9, fontWeight: 400 }}
+                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(15px, 1.8vw, 17px)', color: 'rgba(255,255,255,0.8)', lineHeight: 1.9, fontWeight: 400 }}
                 dangerouslySetInnerHTML={{ __html: blog.body.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br />') }}
               />
 
               {/* Share & Like Actions */}
               <div
                 className="blog-actions-row"
-                style={{ marginTop: '3.5rem', paddingTop: '2rem', borderTop: '1px solid #F0F0F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}
+                style={{ marginTop: '3.5rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}
               >
                 <button 
                   onClick={handleLike}
-                  style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', background: hasLiked ? '#FFF5E5' : '#FAFAFA', border: `1px solid ${hasLiked ? '#E8A020' : '#E5E5E5'}`, color: hasLiked ? '#E8A020' : '#111', borderRadius: '30px', cursor: hasLiked ? 'default' : 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '15px', transition: 'all 0.2s', flex: '1 1 auto', justifyContent: 'center' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', background: hasLiked ? 'rgba(232,160,32,0.15)' : 'rgba(255,255,255,0.05)', border: `1px solid ${hasLiked ? '#E8A020' : 'rgba(255,255,255,0.1)'}`, color: hasLiked ? '#E8A020' : '#FFFFFF', borderRadius: '30px', cursor: hasLiked ? 'default' : 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '15px', transition: 'all 0.2s', flex: '1 1 auto', justifyContent: 'center' }}
                 >
-                  <Heart size={18} fill={hasLiked ? '#E8A020' : 'none'} color={hasLiked ? '#E8A020' : '#111'} />
+                  <Heart size={18} fill={hasLiked ? '#E8A020' : 'none'} color={hasLiked ? '#E8A020' : '#FFFFFF'} />
                   {likesCount} {likesCount === 1 ? 'Like' : 'Likes'}
                 </button>
                 
                 <button 
                   onClick={() => navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied!'))}
-                  style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', background: '#FAFAFA', border: '1px solid #E5E5E5', color: '#111', borderRadius: '30px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '15px', transition: 'background 0.2s', flex: '1 1 auto', justifyContent: 'center' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#F0F0F0'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#FAFAFA'}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#FFFFFF', borderRadius: '30px', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '15px', transition: 'background 0.2s', flex: '1 1 auto', justifyContent: 'center' }}
                 >
                   <Share2 size={18} />
                   Share Article
@@ -175,7 +173,7 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
           <AnimatedSection delay={300}>
             <div style={{ marginBottom: '6rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem' }}>
-                <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: 'clamp(24px, 3.5vw, 32px)', color: '#111111', textTransform: 'uppercase', margin: 0 }}>
+                <h3 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: 'clamp(24px, 3.5vw, 32px)', color: '#FFFFFF', textTransform: 'uppercase', margin: 0 }}>
                   Discussion
                 </h3>
                 <span style={{ background: '#E8A020', color: '#111', padding: '2px 12px', borderRadius: '20px', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: '14px' }}>

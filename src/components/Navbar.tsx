@@ -8,7 +8,7 @@ const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Blog', href: '#blog' },
+  { label: 'News', href: '#blog' },
   { label: 'Team', href: '#team' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -97,9 +97,6 @@ export function Navbar() {
           isSolid ? 'bg-[#111111] shadow-[0_2px_20px_rgba(0,0,0,0.3)]' : 'bg-transparent'
         }`}
       >
-        {/* Mobile App Download Banner */}
-      
-
         {/* Main Navbar */}
         <div className="max-w-[1280px] mx-auto px-5 flex items-center justify-between h-[68px]">
           {/* Logo */}

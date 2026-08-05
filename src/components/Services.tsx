@@ -1,9 +1,9 @@
 'use client'
 import { useState } from 'react'
-import { Building2, Home, HardHat, Wrench, Hammer, Settings, Shield } from 'lucide-react'
+import { Building2, Home, HardHat, Wrench, Hammer, Settings, Shield, CheckCircle2 } from 'lucide-react'
 import { AnimatedSection } from './AnimatedSection'
 
-type ServiceCategory = 'CONSTRUCTION' | 'SERVICES'
+type ServiceCategory = 'SERVICES' | 'CONSTRUCTION'
 
 const constructionServices = [
   {
@@ -51,7 +51,7 @@ const facilityServices = [
   },
   {
     icon: Settings,
-    title: 'Maintenance',
+    title: 'Maintenance Programs',
     description:
       'Comprehensive preventive and corrective maintenance programs that extend asset life, reduce costs, and keep your property performing at its best year-round.',
     items: ['Scheduled PM Programs', 'HVAC Maintenance', 'Building Systems Upkeep', 'Emergency Response'],
@@ -68,146 +68,134 @@ const facilityServices = [
 ]
 
 type Service = {
-  icon: any
+  icon?: any
   title: string
   description: string
   items: string[]
-  image: string
+  image?: string
   image_url?: string
 }
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   const Icon = service.icon || Building2
-  const imageUrl = service.image_url || service.image
+  const imageUrl = service.image_url || service.image || 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=700&h=450&fit=crop&auto=format'
 
   return (
     <AnimatedSection delay={index * 100} variant="up">
       <div
+        className="service-card-wrapper"
         style={{
-          background: '#FFFFFF',
+          background: '#181818',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '16px',
           overflow: 'hidden',
-          transition: 'transform 0.2s, box-shadow 0.2s',
+          transition: 'all 0.3s ease',
           height: '100%',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-4px)'
-          e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.10)'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)'
-          e.currentTarget.style.boxShadow = 'none'
+          display: 'flex',
+          flexDirection: 'column',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
         }}
       >
-        {/* Image */}
-        <div style={{ position: 'relative', overflow: 'hidden', height: 'clamp(160px, 22vw, 220px)' }}>
+        {/* Image with subtle gradient */}
+        <div style={{ position: 'relative', overflow: 'hidden', height: 'clamp(180px, 22vw, 220px)' }}>
           <img
             src={imageUrl}
             alt={service.title}
+            className="service-img"
             style={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              transition: 'transform 0.4s ease',
+              transition: 'transform 0.5s ease',
               display: 'block',
             }}
-            onMouseEnter={(e) => ((e.target as HTMLElement).style.transform = 'scale(1.04)')}
-            onMouseLeave={(e) => ((e.target as HTMLElement).style.transform = 'scale(1)')}
           />
           <div
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%)',
+              background: 'linear-gradient(to top, #181818 0%, rgba(24,24,24,0.4) 60%, transparent 100%)',
             }}
           />
+          <div
+            style={{
+              position: 'absolute',
+              top: '1rem',
+              right: '1rem',
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              background: 'rgba(232, 160, 32, 0.95)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
+            }}
+          >
+            <Icon size={22} color="#111111" />
+          </div>
         </div>
 
         {/* Content */}
-        <div style={{ padding: 'clamp(1.25rem, 4vw, 2rem)' }}>
-          <div
+        <div style={{ padding: '1.75rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <h3
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              marginBottom: '1rem',
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontWeight: 800,
+              fontSize: 'clamp(20px, 2.5vw, 24px)',
+              color: '#FFFFFF',
+              margin: '0 0 0.75rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
             }}
           >
-            <div
-              style={{
-                width: '42px',
-                height: '42px',
-                background: '#E8A020',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}
-            >
-              <Icon size={20} color="#111111" />
-            </div>
-            <h3
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 700,
-                fontSize: 'clamp(18px, 3vw, 22px)',
-                color: '#111111',
-                margin: 0,
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-              }}
-            >
-              {service.title}
-            </h3>
-          </div>
+            {service.title}
+          </h3>
 
           <p
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: 'clamp(13px, 1.5vw, 14px)',
-              lineHeight: 1.7,
-              color: '#6B6B6B',
-              margin: '0 0 1.25rem',
+              fontSize: '14px',
+              lineHeight: 1.65,
+              color: 'rgba(255, 255, 255, 0.65)',
+              margin: '0 0 1.5rem',
               fontWeight: 300,
+              flex: 1,
             }}
           >
             {service.description}
           </p>
 
-          <ul
-            style={{
-              listStyle: 'none',
-              padding: 0,
-              margin: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '6px',
-            }}
-          >
-            {service.items.map((item) => (
-              <li
-                key={item}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: '13px',
-                  color: '#444444',
-                  fontWeight: 500,
-                }}
-              >
-                <div
+          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '1.25rem' }}>
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+                gap: '10px',
+              }}
+            >
+              {service.items && service.items.map((item) => (
+                <li
+                  key={item}
                   style={{
-                    width: '16px',
-                    height: '2px',
-                    background: '#E8A020',
-                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '12.5px',
+                    color: 'rgba(255, 255, 255, 0.85)',
+                    fontWeight: 500,
                   }}
-                />
-                {item}
-              </li>
-            ))}
-          </ul>
+                >
+                  <CheckCircle2 size={14} color="#E8A020" style={{ flexShrink: 0 }} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </AnimatedSection>
@@ -222,8 +210,9 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
   let currentServices: any[] = []
   if (useDynamic) {
     currentServices = dynamicServices!.filter(s => s.category === activeTab)
+    if (currentServices.length === 0) currentServices = dynamicServices!
   } else {
-    currentServices = activeTab === 'CONSTRUCTION' ? constructionServices : facilityServices
+    currentServices = activeTab === 'SERVICES' ? facilityServices : constructionServices
   }
 
   return (
@@ -231,14 +220,15 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
       id="services"
       className="section-padded"
       style={{
-        background: '#F7F4EE',
+        background: '#111111',
         padding: '7rem 1.25rem',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header */}
         <AnimatedSection>
-          <div style={{ marginBottom: '2.5rem' }}>
+          <div style={{ marginBottom: '3rem' }}>
             <div
               style={{
                 display: 'flex',
@@ -254,7 +244,7 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
                   fontSize: '12px',
                   letterSpacing: '0.18em',
                   color: '#E8A020',
-                  fontWeight: 500,
+                  fontWeight: 600,
                 }}
               >
                 WHAT WE OFFER
@@ -274,49 +264,53 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
                 style={{
                   fontFamily: "'Barlow Condensed', sans-serif",
                   fontWeight: 800,
-                  fontSize: 'clamp(30px, 4vw, 54px)',
+                  fontSize: 'clamp(32px, 4vw, 56px)',
                   lineHeight: 1.05,
-                  color: '#111111',
+                  color: '#FFFFFF',
                   textTransform: 'uppercase',
                   margin: 0,
                 }}
               >
-                REPAIR &
-                <br />
-                <span style={{ color: '#E8A020' }}>MAINTENANCE</span>
+                REPAIR & <span style={{ color: '#E8A020' }}>MAINTENANCE</span>
               </h2>
               <p
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
-                  fontSize: 'clamp(13px, 1.8vw, 15px)',
+                  fontSize: 'clamp(14px, 1.8vw, 16px)',
                   lineHeight: 1.7,
-                  color: '#6B6B6B',
-                  maxWidth: '380px',
+                  color: 'rgba(255, 255, 255, 0.65)',
+                  maxWidth: '420px',
                   margin: 0,
                   fontWeight: 300,
                 }}
               >
-                Specializing in all types of home and property repairs —
-                property repair, maintenance programs, and full facility management services.
+                Cebu&apos;s primary specialists in property repairs, preventive maintenance programs, and full commercial facility management.
               </p>
             </div>
           </div>
         </AnimatedSection>
 
-        {/* Tab bar */}
+        {/* Tab Switcher */}
         <AnimatedSection delay={100}>
           <div
             style={{
-              display: 'flex',
-              gap: '2px',
-              background: '#D8D4CC',
-              marginBottom: '2px',
-              width: 'fit-content',
+              display: 'inline-flex',
+              gap: '6px',
+              background: '#1C1C1C',
+              padding: '6px',
+              borderRadius: '12px',
+              border: '1px solid rgba(255,255,255,0.08)',
+              marginBottom: '2.5rem',
+              maxWidth: '100%',
               overflowX: 'auto',
-              WebkitOverflowScrolling: 'touch' as any,
             }}
           >
-            {([{ key: 'SERVICES', label: 'REPAIR & MAINTENANCE' }, { key: 'CONSTRUCTION', label: 'CONSTRUCTION' }] as { key: ServiceCategory; label: string }[]).map(({ key: tab, label }) => (
+            {(
+              [
+                { key: 'SERVICES', label: 'REPAIR & MAINTENANCE' },
+                { key: 'CONSTRUCTION', label: 'CONSTRUCTION' },
+              ] as { key: ServiceCategory; label: string }[]
+            ).map(({ key: tab, label }) => (
               <button
                 key={tab}
                 id={`services-tab-${tab.toLowerCase()}`}
@@ -324,14 +318,15 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
                 style={{
                   fontFamily: "'Barlow Condensed', sans-serif",
                   fontWeight: 700,
-                  fontSize: 'clamp(12px, 2.5vw, 14px)',
-                  letterSpacing: '0.12em',
-                  padding: '12px 22px',
+                  fontSize: 'clamp(13px, 2.2vw, 15px)',
+                  letterSpacing: '0.1em',
+                  padding: '10px 22px',
+                  borderRadius: '8px',
                   border: 'none',
                   cursor: 'pointer',
-                  transition: 'background 0.2s, color 0.2s',
-                  background: activeTab === tab ? '#E8A020' : '#FFFFFF',
-                  color: activeTab === tab ? '#111111' : '#6B6B6B',
+                  transition: 'all 0.25s ease',
+                  background: activeTab === tab ? '#E8A020' : 'transparent',
+                  color: activeTab === tab ? '#111111' : 'rgba(255, 255, 255, 0.6)',
                   whiteSpace: 'nowrap',
                 }}
               >
@@ -341,13 +336,12 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
           </div>
         </AnimatedSection>
 
-        {/* Services grid */}
+        {/* Services Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '2px',
-            background: '#D8D4CC',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))',
+            gap: '2rem',
           }}
           className="services-grid"
         >
@@ -356,6 +350,17 @@ export function Services({ dynamicServices }: { dynamicServices?: any[] }) {
           ))}
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        .service-card-wrapper:hover {
+          border-color: rgba(232, 160, 32, 0.5) !important;
+          transform: translateY(-6px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+        }
+        .service-card-wrapper:hover .service-img {
+          transform: scale(1.06);
+        }
+      `}} />
     </section>
   )
 }

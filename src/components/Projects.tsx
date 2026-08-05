@@ -1,9 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, MapPin, Calendar, ExternalLink } from 'lucide-react'
 import { AnimatedSection } from './AnimatedSection'
-
-const categories = ['All', 'Residential', 'Commercial', 'Infrastructure']
 
 const projects = [
   {
@@ -68,19 +66,20 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
       id="projects"
       className="section-padded"
       style={{
-        background: '#F7F4EE',
+        background: '#141414',
         padding: '7rem 1.25rem',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        {/* Header */}
+        {/* Header & Tabs */}
         <AnimatedSection>
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-end',
-              marginBottom: '2.5rem',
+              marginBottom: '3rem',
               flexWrap: 'wrap',
               gap: '1.5rem',
             }}
@@ -101,7 +100,7 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
                     fontSize: '12px',
                     letterSpacing: '0.18em',
                     color: '#E8A020',
-                    fontWeight: 500,
+                    fontWeight: 600,
                   }}
                 >
                   PORTFOLIO
@@ -111,28 +110,28 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
                 style={{
                   fontFamily: "'Barlow Condensed', sans-serif",
                   fontWeight: 800,
-                  fontSize: 'clamp(30px, 4vw, 54px)',
+                  fontSize: 'clamp(32px, 4vw, 56px)',
                   lineHeight: 1.05,
-                  color: '#111111',
+                  color: '#FFFFFF',
                   textTransform: 'uppercase',
                   margin: 0,
                 }}
               >
-                FEATURED
-                <br />
-                <span style={{ color: '#E8A020' }}>PROJECTS</span>
+                FEATURED <span style={{ color: '#E8A020' }}>PROJECTS</span>
               </h2>
             </div>
 
-            {/* Filter tabs */}
+            {/* Filter Pill Tabs */}
             <div
-              className="projects-filter-wrap"
               style={{
-                display: 'flex',
-                gap: '2px',
-                background: '#D8D4CC',
+                display: 'inline-flex',
+                gap: '6px',
+                background: '#1C1C1C',
+                padding: '6px',
+                borderRadius: '12px',
+                border: '1px solid rgba(255,255,255,0.08)',
                 overflowX: 'auto',
-                WebkitOverflowScrolling: 'touch' as any,
+                maxWidth: '100%',
               }}
             >
               {uniqueCategories.map((cat) => (
@@ -143,14 +142,15 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
                   style={{
                     fontFamily: "'Barlow Condensed', sans-serif",
                     fontWeight: 700,
-                    fontSize: 'clamp(11px, 2vw, 13px)',
-                    letterSpacing: '0.1em',
-                    padding: '11px 18px',
+                    fontSize: 'clamp(12px, 2vw, 14px)',
+                    letterSpacing: '0.08em',
+                    padding: '8px 18px',
+                    borderRadius: '8px',
                     border: 'none',
                     cursor: 'pointer',
-                    transition: 'background 0.2s, color 0.2s',
-                    background: active === cat ? '#E8A020' : '#FFFFFF',
-                    color: active === cat ? '#111111' : '#6B6B6B',
+                    transition: 'all 0.25s ease',
+                    background: active === cat ? '#E8A020' : 'transparent',
+                    color: active === cat ? '#111111' : 'rgba(255, 255, 255, 0.65)',
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -161,59 +161,56 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
           </div>
         </AnimatedSection>
 
-        {/* Projects grid */}
+        {/* Projects Cards Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '2px',
-            background: '#D8D4CC',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(340px, 100%), 1fr))',
+            gap: '2rem',
           }}
-          className="projects-grid"
         >
           {filtered.map((project, i) => (
             <AnimatedSection key={project.title} delay={(i % 3) * 100} variant="up">
               <div
+                className="project-card-item"
                 style={{
-                  background: '#FFFFFF',
+                  background: '#1D1D1D',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: '16px',
                   overflow: 'hidden',
-                  cursor: 'pointer',
                   position: 'relative',
                   height: '100%',
-                }}
-                onMouseEnter={(e) => {
-                  const img = e.currentTarget.querySelector('img') as HTMLImageElement
-                  if (img) img.style.transform = 'scale(1.05)'
-                  const overlay = e.currentTarget.querySelector('.proj-overlay') as HTMLElement
-                  if (overlay) overlay.style.opacity = '1'
-                }}
-                onMouseLeave={(e) => {
-                  const img = e.currentTarget.querySelector('img') as HTMLImageElement
-                  if (img) img.style.transform = 'scale(1)'
-                  const overlay = e.currentTarget.querySelector('.proj-overlay') as HTMLElement
-                  if (overlay) overlay.style.opacity = '0'
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'all 0.35s ease',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
                 }}
               >
-                <div style={{ position: 'relative', overflow: 'hidden', height: 'clamp(180px, 22vw, 240px)' }}>
+                {/* Project Image */}
+                <div style={{ position: 'relative', overflow: 'hidden', height: '230px' }}>
                   <img
                     src={project.image_url || project.image}
                     alt={project.title}
+                    className="proj-img"
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      transition: 'transform 0.4s ease',
+                      transition: 'transform 0.5s ease',
                       display: 'block',
                     }}
                   />
-                  {/* Category badge */}
+                  {/* Category Pill Overlay */}
                   <div
                     style={{
                       position: 'absolute',
                       top: '1rem',
                       left: '1rem',
-                      background: '#E8A020',
-                      padding: '4px 10px',
+                      background: 'rgba(17, 17, 17, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(232, 160, 32, 0.4)',
+                      padding: '4px 12px',
+                      borderRadius: '20px',
                     }}
                   >
                     <span
@@ -221,92 +218,76 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
                         fontFamily: "'Barlow Condensed', sans-serif",
                         fontWeight: 700,
                         fontSize: '11px',
-                        letterSpacing: '0.1em',
-                        color: '#111111',
+                        letterSpacing: '0.12em',
+                        color: '#E8A020',
                       }}
                     >
                       {project.category.toUpperCase()}
                     </span>
                   </div>
-                  {/* Hover overlay */}
-                  <div
-                    className="proj-overlay"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'rgba(232, 160, 32, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      opacity: 0,
-                      transition: 'opacity 0.3s',
-                    }}
-                  >
-                    <div
-                      style={{
-                        background: '#E8A020',
-                        width: '48px',
-                        height: '48px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <ArrowRight size={20} color="#111111" />
-                    </div>
-                  </div>
                 </div>
 
-                <div style={{ padding: 'clamp(1rem, 3vw, 1.5rem)' }}>
+                {/* Content Details */}
+                <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      marginBottom: '0.5rem',
+                      marginBottom: '0.75rem',
                     }}
                   >
                     <span
                       style={{
                         fontFamily: "'DM Sans', sans-serif",
-                        fontSize: '12px',
-                        color: '#6B6B6B',
+                        fontSize: '12.5px',
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
                       }}
                     >
-                      {project.location}
+                      <MapPin size={13} color="#E8A020" /> {project.location}
                     </span>
                     <span
                       style={{
                         fontFamily: "'Barlow Condensed', sans-serif",
                         fontWeight: 700,
-                        fontSize: '14px',
+                        fontSize: '13px',
                         color: '#E8A020',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
                       }}
                     >
-                      {project.year}
+                      <Calendar size={13} /> {project.year}
                     </span>
                   </div>
+
                   <h3
                     style={{
                       fontFamily: "'Barlow Condensed', sans-serif",
-                      fontWeight: 700,
-                      fontSize: 'clamp(16px, 2.5vw, 20px)',
-                      color: '#111111',
+                      fontWeight: 800,
+                      fontSize: 'clamp(20px, 2.5vw, 24px)',
+                      color: '#FFFFFF',
                       textTransform: 'uppercase',
                       letterSpacing: '0.03em',
-                      margin: '0 0 0.5rem',
+                      margin: '0 0 0.75rem',
+                      lineHeight: 1.15,
                     }}
                   >
                     {project.title}
                   </h3>
+
                   <p
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
-                      fontSize: '13px',
-                      color: '#6B6B6B',
+                      fontSize: '14px',
+                      color: 'rgba(255, 255, 255, 0.65)',
                       lineHeight: 1.6,
                       margin: 0,
                       fontWeight: 300,
+                      flex: 1,
                     }}
                   >
                     {project.description}
@@ -317,6 +298,17 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
           ))}
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        .project-card-item:hover {
+          border-color: rgba(232, 160, 32, 0.5) !important;
+          transform: translateY(-6px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important;
+        }
+        .project-card-item:hover .proj-img {
+          transform: scale(1.06);
+        }
+      `}} />
     </section>
   )
 }

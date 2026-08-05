@@ -25,7 +25,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative h-svh min-h-[560px] pt-[80px] lg:pt-[100px] pb-10 flex items-center overflow-hidden bg-[#1a1a1a]">
+    <section className="hero-section relative h-svh min-h-[560px] pt-[80px] lg:pt-[100px] pb-10 flex items-center overflow-hidden bg-[#1a1a1a]">
       {/* Background image - local file for reliability on all devices */}
       <img
         src="/hero-bg.jpg"
