@@ -49,6 +49,12 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "MBDC FIX ALL",
+    startupImage: [
+      { url: "/apple-touch-icon.png" },
+    ],
+  },
+  formatDetection: {
+    telephone: false,
   },
   openGraph: {
     title: "Property Repair & Maintenance Services in Cebu | MBDC FIX ALL",
@@ -94,7 +100,17 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap"
           rel="stylesheet"
         />
+        {/* iOS PWA — Home Screen Icon */}
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        {/* iOS PWA — Full Screen & Theme */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="MBDC FIX ALL" />
+        {/* iOS PWA — Prevents phone number detection */}
+        <meta name="format-detection" content="telephone=no" />
+        {/* Pinned tab (Safari desktop) */}
+        <link rel="mask-icon" href="/mightyb_logo.png" color="#E8A020" />
       </head>
       <body>
         <AppSplashScreen />

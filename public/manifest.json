@@ -1,13 +1,18 @@
 {
   "name": "MBDC FIX ALL - Home Repairs & Construction",
   "short_name": "MBDC FIX ALL",
-  "description": "Cebu's trusted builder and facility services provider since 1999.",
+  "description": "Cebu's trusted property repair, home maintenance, and facility services provider since 1999.",
   "start_url": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#0A0A0A",
   "theme_color": "#E8A020",
   "orientation": "portrait-primary",
   "scope": "/",
+  "lang": "en",
+  "categories": ["business", "utilities"],
+  "prefer_related_applications": false,
+  "screenshots": [],
   "icons": [
     {
       "src": "/icon-192.png",

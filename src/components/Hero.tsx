@@ -1,12 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { ChevronDown, Hammer, Settings, Shield, Smartphone, Download } from "lucide-react";
-
-const serviceHighlights = [
-  { icon: Hammer, label: "PROPERTY REPAIR" },
-  { icon: Settings, label: "MAINTENANCE" },
-  { icon: Shield, label: "FACILITY SERVICES" },
-];
+import { ChevronDown } from "lucide-react";
 
 export function Hero() {
   const [isStandalone, setIsStandalone] = useState(true);
@@ -25,16 +19,22 @@ export function Hero() {
   };
 
   return (
-    <section className="hero-section relative h-svh min-h-[560px] pt-[80px] lg:pt-[100px] pb-10 flex items-center overflow-hidden bg-[#1a1a1a]">
-      {/* Background image - local file for reliability on all devices */}
-      <img
-        src="/hero-bg.jpg"
-        alt="Professional home repair and construction work in Cebu"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ objectPosition: 'right center' }}
-      />
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.70)_55%,rgba(0,0,0,0.35)_100%)]" />
+    <section className="hero-section relative h-svh min-h-[560px] pt-[80px] lg:pt-[100px] pb-10 flex items-start lg:items-center overflow-hidden bg-[#1a1a1a]">
+      {/* Background image — portrait on mobile, landscape on desktop */}
+      <picture className="absolute inset-0 w-full h-full">
+        <source media="(max-width: 767px)" srcSet="/hero-bg-portrait.png" />
+        <img
+          src="/hero-bg.png"
+          alt="Professional home repair and construction work in Cebu"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: "center center", transform: "scale(1.08)", transformOrigin: "center center" }}
+        />
+      </picture>
+
+      {/* Desktop gradient — left-to-right */}
+      <div className="absolute inset-0 hidden md:block bg-[linear-gradient(to_right,rgba(0,0,0,0.93)_0%,rgba(0,0,0,0.82)_35%,rgba(0,0,0,0.45)_62%,rgba(0,0,0,0.08)_100%)]" />
+      {/* Mobile gradient — dark top band for text, clear middle for workers, dark bottom strip for CTAs */}
+      <div className="absolute inset-0 block md:hidden bg-[linear-gradient(to_bottom,rgba(0,0,0,0.85)_0%,rgba(0,0,0,0.60)_22%,rgba(0,0,0,0.10)_50%,rgba(0,0,0,0.10)_72%,rgba(0,0,0,0.78)_100%)]" />
 
       {/* Floating Bubbles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -60,12 +60,12 @@ export function Hero() {
       {/* Accent line left */}
       <div className="absolute left-0 top-0 bottom-0 w-[5px] bg-[#E8A020]" />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-[1280px] mx-auto px-5 w-full">
-        <div className="max-w-[800px]">
+      {/* ── TOP TEXT BLOCK (mobile: top-anchored, desktop: centered) ── */}
+      <div className="relative z-10 max-w-[1280px] mx-auto px-5 w-full pt-5 lg:pt-0">
+        <div className="max-w-[520px] lg:max-w-[44%]">
           {/* Label */}
           <div
-            className="inline-flex items-center gap-[10px] mb-5"
+            className="inline-flex items-center gap-[10px] mb-3 lg:mb-5"
             style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.1s" }}
           >
             <div className="w-10 h-[2px] bg-[#E8A020]" />
@@ -76,7 +76,7 @@ export function Hero() {
 
           {/* Headline */}
           <h1
-            className="font-barlow font-black text-[clamp(52px,10vw,100px)] leading-[0.92] text-white mb-5 tracking-[-0.01em] uppercase"
+            className="font-barlow font-black text-[clamp(44px,10vw,100px)] leading-[0.92] text-white mb-3 lg:mb-5 tracking-[-0.01em] uppercase"
             style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.25s" }}
           >
             MBDC
@@ -84,36 +84,17 @@ export function Hero() {
             <span className="text-[#E8A020]">FIX ALL</span>
           </h1>
 
-          {/* Service Highlight Badges */}
-          <div
-            className="flex flex-wrap gap-3 mb-6"
-            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.38s" }}
-          >
-            {serviceHighlights.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2 bg-[#E8A020]/10 border border-[#E8A020]/40 backdrop-blur-sm px-4 py-2"
-              >
-                <Icon size={14} className="text-[#E8A020] shrink-0" />
-                <span className="font-barlow font-bold text-[13px] tracking-[0.14em] text-[#E8A020]">
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
-
           {/* Subtext */}
           <p
-            className="hero-subtext font-dm text-[clamp(15px,3vw,18px)] leading-[1.65] text-white/80 max-w-[520px] mb-8 font-light"
-            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.5s" }}
+            className="hero-subtext font-dm text-[clamp(13px,2.5vw,17px)] leading-[1.6] text-white/75 mb-0 lg:mb-8 font-light"
+            style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.38s" }}
           >
-            Your trusted partner for all types of home and property repairs in Cebu —
-            fast response, quality workmanship, and transparent pricing.
+            Fast response. Quality workmanship. Transparent pricing — right here in Cebu.
           </p>
 
-          {/* CTAs */}
+          {/* CTAs — visible only on desktop inline */}
           <div
-            className="hero-cta-row flex gap-4 flex-wrap"
+            className="hero-cta-row hidden lg:flex gap-4 flex-wrap mt-8"
             style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.62s" }}
           >
             <a
@@ -140,10 +121,34 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── MOBILE-ONLY: CTAs pinned above the bottom navbar ── */}
+      <div className="absolute bottom-[84px] left-0 right-0 px-5 flex gap-3 lg:hidden z-10">
+        <a
+          href="#services"
+          onClick={(e) => {
+            e.preventDefault();
+            document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-[#E8A020] text-[#111111] px-4 py-[14px] no-underline transition-all duration-200 active:opacity-80 shadow-lg"
+        >
+          OUR SERVICES
+        </a>
+        <a
+          href="#contact"
+          onClick={(e) => {
+            e.preventDefault();
+            document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-black/40 backdrop-blur-sm text-white px-4 py-[14px] no-underline border-2 border-white/60 transition-all duration-200 active:opacity-80 shadow-lg"
+        >
+          START PROJECT
+        </a>
+      </div>
+
+      {/* Scroll indicator — desktop only */}
       <button
         onClick={scrollToAbout}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-transparent border-0 text-white/60 cursor-pointer flex flex-col items-center gap-[6px] z-10"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-transparent border-0 text-white/60 cursor-pointer flex-col items-center gap-[6px] z-10 hidden lg:flex"
         style={{ animation: "bounce2 2s ease-in-out infinite" }}
       >
         <style>{`@keyframes bounce2 { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }`}</style>

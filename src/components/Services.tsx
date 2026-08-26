@@ -12,15 +12,7 @@ const constructionServices = [
     description:
       'Custom single-family homes, townhouses, and condominiums built to your exact specifications — from foundation to finishing.',
     items: ['Custom Home Building', 'Townhouse Development', 'House Renovation', 'Interior Fit-Out'],
-    image: 'https://images.unsplash.com/photo-1721815693498-cc28507c0ba2?w=700&h=450&fit=crop&auto=format',
-  },
-  {
-    icon: Building2,
-    title: 'Commercial Buildings',
-    description:
-      'Office towers, retail centers, hotels, and mixed-use developments engineered for durability, aesthetics, and ROI.',
-    items: ['Office Buildings', 'Retail & Commercial', 'Hotels & Hospitality', 'Mixed-Use Complexes'],
-    image: 'https://images.unsplash.com/photo-1621831337128-35676ca30868?w=700&h=450&fit=crop&auto=format',
+    image: './construction.jpg',
   },
   {
     icon: HardHat,
@@ -28,7 +20,7 @@ const constructionServices = [
     description:
       'Roads, bridges, drainage systems, and public works delivered to DPWH standards with efficiency and precision.',
     items: ['Road & Pavement Works', 'Bridge Construction', 'Drainage Systems', 'Earthmoving & Grading'],
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=700&h=450&fit=crop&auto=format',
+    image: './infastructure.png',
   },
   {
     icon: Wrench,
@@ -36,7 +28,7 @@ const constructionServices = [
     description:
       'Breathe new life into existing structures with our expert renovation team — on schedule, within budget.',
     items: ['Commercial Renovation', 'Structural Retrofitting', 'Facade Upgrades', 'Space Reconfiguration'],
-    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=700&h=450&fit=crop&auto=format',
+    image: './renovation.png',
   },
 ]
 
@@ -47,7 +39,7 @@ const facilityServices = [
     description:
       'Fast, reliable repair solutions for residential and commercial properties — structural fixes, plumbing, electrical, flooring, and more. We respond quickly to minimize disruption.',
     items: ['Structural Repairs', 'Plumbing & Electrical', 'Flooring & Tiling', 'Roofing Repairs'],
-    image: 'https://toplissolutions.com/wp-content/uploads/2024/07/tsi-rectification-hero-image-scaled.webp',
+    image: './repair.png',
   },
   {
     icon: Settings,
@@ -55,7 +47,7 @@ const facilityServices = [
     description:
       'Comprehensive preventive and corrective maintenance programs that extend asset life, reduce costs, and keep your property performing at its best year-round.',
     items: ['Scheduled PM Programs', 'HVAC Maintenance', 'Building Systems Upkeep', 'Emergency Response'],
-    image: 'https://completemaintenanceexperts.com.au/wp-content/uploads/2024/11/restorations-services-sydney.webp',
+    image: './maintenance.png',
   },
   {
     icon: Shield,
@@ -63,7 +55,7 @@ const facilityServices = [
     description:
       'End-to-end facility management for commercial and industrial properties — janitorial, landscaping, security coordination, and pest control under one trusted partner.',
     items: ['Janitorial & Sanitation', 'Landscaping & Grounds', 'Security & Access Control', 'Pest Management'],
-    image: 'https://silagroup.co.in/wp-content/uploads/2023/06/fm-gallery-13-min.jpg',
+    image: './facility.png',
   },
 ]
 
