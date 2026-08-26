@@ -86,3 +86,17 @@ ALTER TABLE team_members DISABLE ROW LEVEL SECURITY;
 ALTER TABLE services DISABLE ROW LEVEL SECURITY;
 ALTER TABLE inquiries DISABLE ROW LEVEL SECURITY;
 
+-- 8. Create the gallery table
+CREATE TABLE IF NOT EXISTS gallery (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  title text NOT NULL,
+  category text NOT NULL DEFAULT 'REPAIR',
+  description text,
+  image_url text NOT NULL,
+  is_featured boolean DEFAULT false,
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE gallery DISABLE ROW LEVEL SECURITY;
+alter publication supabase_realtime add table gallery;
+

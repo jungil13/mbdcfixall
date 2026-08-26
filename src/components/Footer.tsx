@@ -16,6 +16,7 @@ const footerLinks: Record<string, { label: string; href: string; external?: bool
   Company: [
     { label: "About Us", href: "#about" },
     { label: "Our Projects", href: "#projects" },
+    { label: "Work Gallery", href: "/gallery" },
     { label: "Services", href: "#services" },
     { label: "Blog & Updates", href: "#blog" },
   ],

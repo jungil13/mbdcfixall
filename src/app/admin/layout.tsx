@@ -14,12 +14,14 @@ import {
   Bell,
   X,
   Mail,
-  Menu
+  Menu,
+  Image as ImageIcon
 } from 'lucide-react'
 
 const navItems = [
   { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { label: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare },
+  { label: 'Gallery', href: '/admin/gallery', icon: ImageIcon },
   { label: 'Blogs & News', href: '/admin/blogs', icon: FileText },
   { label: 'Services', href: '/admin/services', icon: Wrench },
   { label: 'Projects', href: '/admin/projects', icon: FileText },

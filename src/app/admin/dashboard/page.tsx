@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { MessageSquare, FileText, Users, Wrench, TrendingUp } from 'lucide-react'
+import { MessageSquare, FileText, Users, Wrench, TrendingUp, Image as ImageIcon } from 'lucide-react'
 
 
 type Stats = {
@@ -10,6 +10,7 @@ type Stats = {
   blogs: number
   team: number
   services: number
+  gallery: number
 }
 
 type RecentInquiry = {
@@ -22,7 +23,7 @@ type RecentInquiry = {
 
 export default function DashboardPage() {
   const supabase = createClient()
-  const [stats, setStats] = useState<Stats>({ inquiries: 0, blogs: 0, team: 0, services: 0 })
+  const [stats, setStats] = useState<Stats>({ inquiries: 0, blogs: 0, team: 0, services: 0, gallery: 0 })
   const [recent, setRecent] = useState<RecentInquiry[]>([])
   const [loading, setLoading] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
@@ -40,17 +41,20 @@ export default function DashboardPage() {
       { count: blogsCount },
       { count: teamCount },
       { count: servicesCount },
+      { count: galleryCount },
     ] = await Promise.all([
       supabase.from('inquiries').select('*', { count: 'exact', head: true }),
       supabase.from('blogs').select('*', { count: 'exact', head: true }),
       supabase.from('team_members').select('*', { count: 'exact', head: true }),
       supabase.from('services').select('*', { count: 'exact', head: true }),
+      supabase.from('gallery').select('*', { count: 'exact', head: true }),
     ])
     setStats({
       inquiries: inquiriesCount ?? 0,
       blogs: blogsCount ?? 0,
       team: teamCount ?? 0,
       services: servicesCount ?? 0,
+      gallery: galleryCount ?? 0,
     })
 
     const { data: recentData } = await supabase
@@ -73,6 +77,9 @@ export default function DashboardPage() {
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blogs' }, () => {
         fetchStats()
       })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'gallery' }, () => {
+        fetchStats()
+      })
       .subscribe()
 
     return () => { supabase.removeChannel(channel) }
@@ -80,6 +87,7 @@ export default function DashboardPage() {
 
   const statCards = [
     { label: 'Total Inquiries', value: stats.inquiries, icon: MessageSquare, color: '#4CAF50', bg: 'rgba(76, 175, 80, 0.1)' },
+    { label: 'Gallery Photos', value: stats.gallery, icon: ImageIcon, color: '#FF9800', bg: 'rgba(255, 152, 0, 0.1)' },
     { label: 'Published Blogs', value: stats.blogs, icon: FileText, color: '#2196F3', bg: 'rgba(33, 150, 243, 0.1)' },
     { label: 'Services Listed', value: stats.services, icon: Wrench, color: '#E8A020', bg: 'rgba(232, 160, 32, 0.1)' },
     { label: 'Team Members', value: stats.team, icon: Users, color: '#9C27B0', bg: 'rgba(156, 39, 176, 0.1)' },
