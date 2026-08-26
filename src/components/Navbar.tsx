@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { Phone, Home, Settings, Folder, MessageSquare, Download, X, Star } from 'lucide-react'
+import { Phone, Home, Settings, Folder, MessageSquare, Download, X, Star, Image as ImageIcon } from 'lucide-react'
 
 const navLinks = [
   { label: 'About', href: '#about' },
@@ -202,6 +202,16 @@ export function Navbar() {
           >
             <Folder size={20} />
             <span className="font-dm text-[10px] font-medium tracking-wide">Projects</span>
+          </a>
+          <a
+            href="#gallery"
+            onClick={(e) => handleNavClick(e, '#gallery')}
+            className={`flex flex-col items-center justify-center gap-1 w-full h-full no-underline transition-colors ${
+              activeSection === 'gallery' ? 'text-[#E8A020]' : 'text-white/50 hover:text-[#E8A020]'
+            }`}
+          >
+            <ImageIcon size={20} />
+            <span className="font-dm text-[10px] font-medium tracking-wide">Gallery</span>
           </a>
           <a
             href="#contact"
