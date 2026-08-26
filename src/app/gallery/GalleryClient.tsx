@@ -97,7 +97,7 @@ export function GalleryClient({ initialItems }: { initialItems: GalleryItem[] })
     <div className="max-w-[1280px] mx-auto px-5">
       {/* Header Banner */}
       <div className="text-center max-w-2xl mx-auto mb-12">
-        <AnimatedSection variant="fade">
+        <AnimatedSection variant="up">
           <div className="inline-flex items-center gap-2 mb-3">
             <div className="w-8 h-[2px] bg-[#E8A020]" />
             <span className="font-barlow font-bold text-[#E8A020] text-xs sm:text-sm tracking-[0.2em] uppercase">
@@ -160,7 +160,7 @@ export function GalleryClient({ initialItems }: { initialItems: GalleryItem[] })
       {/* Photo Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
         {filteredItems.map((item, idx) => (
-          <AnimatedSection key={item.id || idx} variant="fade" delay={(idx % 6) * 0.05}>
+          <AnimatedSection key={item.id || idx} variant="up" delay={(idx % 6) * 50}>
             <div 
               onClick={() => setSelectedImageIndex(idx)}
               className="group relative h-[320px] sm:h-[350px] overflow-hidden bg-[#1a1a1a] border border-white/10 cursor-pointer transition-all duration-300 hover:border-[#E8A020]/60 hover:shadow-2xl hover:shadow-[#E8A020]/15"

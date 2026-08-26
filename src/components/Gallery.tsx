@@ -131,7 +131,7 @@ export function Gallery({ dynamicGallery }: { dynamicGallery?: GalleryItem[] }) 
         </div>
 
         {/* Filter Tabs */}
-        <AnimatedSection variant="fade">
+        <AnimatedSection variant="up">
           <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-4 mb-8 no-scrollbar">
             {categories.map(cat => {
               const active = activeCategory === cat.value
@@ -155,7 +155,7 @@ export function Gallery({ dynamicGallery }: { dynamicGallery?: GalleryItem[] }) 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.slice(0, 6).map((item, idx) => (
-            <AnimatedSection key={item.id || idx} variant="fade" delay={idx * 0.08}>
+            <AnimatedSection key={item.id || idx} variant="up" delay={idx * 80}>
               <div 
                 onClick={() => setSelectedImageIndex(idx)}
                 className="group relative h-[300px] sm:h-[320px] rounded-none overflow-hidden bg-[#1f1f1f] border border-white/10 cursor-pointer transition-all duration-300 hover:border-[#E8A020]/60 hover:shadow-xl hover:shadow-[#E8A020]/10"
