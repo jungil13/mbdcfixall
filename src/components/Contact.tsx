@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { MapPin, Phone, Clock, Mail, Send } from 'lucide-react'
+import { MapPin, Phone, Clock, Mail, Send, Loader2, CheckCircle2 } from 'lucide-react'
 import { AnimatedSection } from './AnimatedSection'
 
 const serviceOptions = [
@@ -151,7 +151,7 @@ export function Contact() {
                     value: '8WX7+H64, Gov. M. Cuenco Ave\nCebu City, 6000 Cebu',
                   },
                   { icon: Phone, label: 'PHONE', value: '(032) 342 2202' },
-                  { icon: Mail, label: 'EMAIL', value: 'info@mightybeecorp.com' },
+                  { icon: Mail, label: 'EMAIL', value: 'mbdcfixall@gmail.com' },
                   {
                     icon: Clock,
                     label: 'OFFICE HOURS',
@@ -239,46 +239,51 @@ export function Contact() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     height: '100%',
-                    minHeight: '300px',
+                    minHeight: '320px',
                     textAlign: 'center',
                     gap: '1rem',
+                    padding: '2rem 1rem',
                   }}
                 >
                   <div
                     style={{
                       width: '64px',
                       height: '64px',
-                      background: '#E8A020',
+                      background: 'rgba(232,160,32,0.15)',
+                      border: '2px solid #E8A020',
+                      borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginBottom: '0.5rem',
                     }}
                   >
-                    <Send size={28} color="#111111" />
+                    <CheckCircle2 size={32} color="#E8A020" />
                   </div>
                   <h3
                     style={{
                       fontFamily: "'Barlow Condensed', sans-serif",
                       fontWeight: 800,
-                      fontSize: '28px',
+                      fontSize: '32px',
                       color: '#FFFFFF',
                       textTransform: 'uppercase',
+                      letterSpacing: '0.04em',
                       margin: 0,
                     }}
                   >
-                    Message Sent!
+                    Thank You!
                   </h3>
                   <p
                     style={{
                       fontFamily: "'DM Sans', sans-serif",
                       fontSize: '15px',
-                      color: 'rgba(255,255,255,0.55)',
-                      maxWidth: '320px',
+                      color: 'rgba(255,255,255,0.75)',
+                      maxWidth: '380px',
                       lineHeight: 1.6,
+                      margin: 0,
                     }}
                   >
-                    Thank you for reaching out. Our team will contact you within 1 business day.
+                    Thank you! We will review your application and we will contact you as soon as possible.
                   </p>
                   <button
                     onClick={() => {
@@ -292,13 +297,22 @@ export function Contact() {
                       letterSpacing: '0.1em',
                       background: 'none',
                       border: '1px solid rgba(255,255,255,0.2)',
-                      color: 'rgba(255,255,255,0.6)',
-                      padding: '10px 22px',
+                      color: 'rgba(255,255,255,0.8)',
+                      padding: '10px 24px',
                       cursor: 'pointer',
-                      marginTop: '0.5rem',
+                      marginTop: '1rem',
+                      transition: 'border-color 0.2s, color 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#E8A020'
+                      e.currentTarget.style.color = '#E8A020'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'
+                      e.currentTarget.style.color = 'rgba(255,255,255,0.8)'
                     }}
                   >
-                    SEND ANOTHER
+                    SEND ANOTHER INQUIRY
                   </button>
                 </div>
               ) : (
@@ -430,7 +444,7 @@ export function Contact() {
                       transition: 'background 0.2s',
                       alignSelf: 'flex-start',
                       width: '100%',
-                      opacity: loading ? 0.7 : 1,
+                      opacity: loading ? 0.85 : 1,
                     }}
                     onMouseEnter={(e) => {
                       if (!loading)
@@ -441,8 +455,17 @@ export function Contact() {
                         (e.currentTarget as HTMLElement).style.background = '#E8A020'
                     }}
                   >
-                    <Send size={16} />
-                    {loading ? 'SENDING…' : 'SEND INQUIRY'}
+                    {loading ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" />
+                        SUBMITTING…
+                      </>
+                    ) : (
+                      <>
+                        <Send size={16} />
+                        SEND INQUIRY
+                      </>
+                    )}
                   </button>
                 </form>
               )}
