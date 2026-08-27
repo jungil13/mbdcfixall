@@ -155,7 +155,7 @@ export function Contact() {
                   {
                     icon: Clock,
                     label: 'OFFICE HOURS',
-                    value: 'Monday – Friday\n8:00 AM – 5:00 PM',
+                    value: 'Monday – Saturday\n8:00 AM – 5:00 PM',
                   },
                 ].map((item) => {
                   const Icon = item.icon
@@ -205,7 +205,7 @@ export function Contact() {
               </div>
 
               <a
-                href="https://maps.google.com/?q=8WX7+H64,+Gov.+M.+Cuenco+Ave,+Cebu+City,+6000+Cebu"
+                href="https://maps.app.goo.gl/62UsZKKXPgikaHYs8"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -338,7 +338,7 @@ export function Contact() {
                       />
                     </div>
                     <div>
-                      <label style={labelStyle}>EMAIL ADDRESS *</label>
+                      <label style={labelStyle}>EMAIL ADDRESS *<span style={{ fontSize: '12px', color: '#E8A020', marginLeft: '10px' }}>Enter your active email address.</span></label>
                       <input
                         required
                         type="email"
@@ -357,7 +357,7 @@ export function Contact() {
                     className="form-row"
                   >
                     <div>
-                      <label style={labelStyle}>PHONE NUMBER</label>
+                      <label style={labelStyle}>PHONE NUMBER <span style={{ fontSize: '12px', color: '#E8A020', marginLeft: '10px' }}>Enter your active phone number.</span></label>
                       <input
                         type="tel"
                         value={form.phone}

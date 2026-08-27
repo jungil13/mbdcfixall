@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import PwaInstaller from "@/components/PwaInstaller";
 import AppSplashScreen from "@/components/AppSplashScreen";
+import CookieConsent from "@/components/CookieConsent";
 
 export const viewport: Viewport = {
   themeColor: "#E8A020",
@@ -116,7 +117,9 @@ export default function RootLayout({
         <AppSplashScreen />
         {children}
         <PwaInstaller />
+        <CookieConsent />
       </body>
     </html>
   );
 }
+
