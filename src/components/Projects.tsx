@@ -5,20 +5,12 @@ import { AnimatedSection } from './AnimatedSection'
 
 const projects = [
   {
-    title: 'Arcadia Heights Subdivision',
-    category: 'Residential',
-    location: 'Consolacion, Cebu',
+    title: 'Cebu City Medical Center Structural Works',
+    category: 'Construction',
+    location: 'Cebu City',
     year: '2024',
-    description: '80-unit premium residential subdivision with clubhouse and amenities.',
-    image: 'https://images.unsplash.com/photo-1721815693498-cc28507c0ba2?w=800&h=560&fit=crop&auto=format',
-  },
-  {
-    title: 'BPO Tower Cebu',
-    category: 'Commercial',
-    location: 'Cebu Business Park',
-    year: '2023',
-    description: '12-story PEZA-accredited office tower with 24,000 sqm of leasable space.',
-    image: 'https://images.unsplash.com/photo-1621831337128-35676ca30868?w=800&h=560&fit=crop&auto=format',
+    description: 'Major structural concrete and steel framework for the new hospital wing.',
+    image: 'https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=800&h=560&fit=crop&auto=format',
   },
   {
     title: 'Gov. Cuenco Road Widening',
@@ -27,22 +19,6 @@ const projects = [
     year: '2023',
     description: '3.2km road widening project with drainage and pedestrian upgrades.',
     image: 'https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=800&h=560&fit=crop&auto=format',
-  },
-  {
-    title: 'Casa Miel Villas',
-    category: 'Residential',
-    location: 'Talisay City, Cebu',
-    year: '2022',
-    description: '24 premium single-detached villas with modern tropical architecture.',
-    image: 'https://images.unsplash.com/photo-1543071293-d91175a68672?w=800&h=560&fit=crop&auto=format',
-  },
-  {
-    title: 'Pacific Mall Expansion',
-    category: 'Commercial',
-    location: 'Mandaue City, Cebu',
-    year: '2022',
-    description: '18,000 sqm retail expansion with food court, cinema, and parking decks.',
-    image: 'https://images.unsplash.com/photo-1580742432710-d3c3703559a9?w=800&h=560&fit=crop&auto=format',
   },
   {
     title: 'Lahug Footbridge',
@@ -60,6 +36,7 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
   const currentProjects = dynamicProjects && dynamicProjects.length > 0 ? dynamicProjects : projects
   const uniqueCategories = ['All', ...Array.from(new Set(currentProjects.map(p => p.category)))]
   const filtered = active === 'All' ? currentProjects : currentProjects.filter((p) => p.category === active)
+  const displayProjects = filtered.slice(0, 3)
 
   return (
     <section
@@ -169,7 +146,7 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
             gap: '2rem',
           }}
         >
-          {filtered.map((project, i) => (
+          {displayProjects.map((project, i) => (
             <AnimatedSection key={project.title} delay={(i % 3) * 100} variant="up">
               <div
                 className="project-card-item"

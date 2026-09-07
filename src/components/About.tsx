@@ -11,7 +11,7 @@ export function About() {
         <AnimatedSection variant="left">
           <div className="relative">
             <img
-              src="/about-hero.png"
+              src="/about-hero.jpg"
               alt="Professional repair technician working on property"
               className="w-full object-cover block"
               style={{ height: "clamp(320px, 45vw, 520px)" }}
