@@ -33,7 +33,6 @@ const footerLinks: Record<string, { label: string; href: string; external?: bool
   ],
   Support: [
     { label: "Get a Quote", href: "#contact" },
-    { label: "Team", href: "#team" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
   ],

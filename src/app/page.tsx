@@ -8,7 +8,6 @@ import { Stats } from '@/components/Stats'
 import { Projects } from '@/components/Projects'
 import { Gallery } from '@/components/Gallery'
 import { WhyUs } from '@/components/WhyUs'
-import { Team } from '@/components/Team'
 import { FeaturedBlogs } from '@/components/FeaturedBlogs'
 import { Contact } from '@/components/Contact'
 import { Footer } from '@/components/Footer'
@@ -34,13 +33,11 @@ export default async function Home() {
 
   const [
     { data: services },
-    { data: team },
     { data: blogs },
     { data: projects },
     { data: gallery }
   ] = await Promise.all([
     supabase.from('services').select('*').order('created_at', { ascending: true }),
-    supabase.from('team_members').select('*').order('order_index', { ascending: true }),
     supabase.from('blogs').select('*').order('published_at', { ascending: false }).limit(3),
     supabase.from('projects').select('*').eq('is_featured', true).order('created_at', { ascending: false }),
     supabase.from('gallery').select('*').order('created_at', { ascending: false }).limit(9)
@@ -62,7 +59,6 @@ export default async function Home() {
       <Projects dynamicProjects={projects || []} />
       <Gallery dynamicGallery={gallery || []} />
       <WhyUs />
-      <Team members={team || []} />
       <FeaturedBlogs blogs={blogs || []} />
       <Contact />
       

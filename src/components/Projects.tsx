@@ -3,37 +3,10 @@ import { useState } from 'react'
 import { ArrowRight, MapPin, Calendar, ExternalLink } from 'lucide-react'
 import { AnimatedSection } from './AnimatedSection'
 
-const projects = [
-  {
-    title: 'Cebu City Medical Center Structural Works',
-    category: 'Construction',
-    location: 'Cebu City',
-    year: '2024',
-    description: 'Major structural concrete and steel framework for the new hospital wing.',
-    image: 'https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=800&h=560&fit=crop&auto=format',
-  },
-  {
-    title: 'Gov. Cuenco Road Widening',
-    category: 'Infrastructure',
-    location: 'Cebu City',
-    year: '2023',
-    description: '3.2km road widening project with drainage and pedestrian upgrades.',
-    image: 'https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=800&h=560&fit=crop&auto=format',
-  },
-  {
-    title: 'Lahug Footbridge',
-    category: 'Infrastructure',
-    location: 'Lahug, Cebu City',
-    year: '2021',
-    description: 'Steel-and-concrete pedestrian footbridge spanning 45 meters.',
-    image: 'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=800&h=560&fit=crop&auto=format',
-  },
-]
-
 export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
   const [active, setActive] = useState('All')
 
-  const currentProjects = dynamicProjects && dynamicProjects.length > 0 ? dynamicProjects : projects
+  const currentProjects = dynamicProjects && dynamicProjects.length > 0 ? dynamicProjects : []
   const uniqueCategories = ['All', ...Array.from(new Set(currentProjects.map(p => p.category)))]
   const filtered = active === 'All' ? currentProjects : currentProjects.filter((p) => p.category === active)
   const displayProjects = filtered.slice(0, 3)
@@ -139,15 +112,16 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
         </AnimatedSection>
 
         {/* Projects Cards Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(340px, 100%), 1fr))',
-            gap: '2rem',
-          }}
-        >
-          {displayProjects.map((project, i) => (
-            <AnimatedSection key={project.title} delay={(i % 3) * 100} variant="up">
+        {displayProjects.length > 0 ? (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(340px, 100%), 1fr))',
+              gap: '2rem',
+            }}
+          >
+            {displayProjects.map((project, i) => (
+              <AnimatedSection key={project.title} delay={(i % 3) * 100} variant="up">
               <div
                 className="project-card-item"
                 style={{
@@ -271,9 +245,14 @@ export function Projects({ dynamicProjects }: { dynamicProjects?: any[] }) {
                   </p>
                 </div>
               </div>
-            </AnimatedSection>
-          ))}
-        </div>
+              </AnimatedSection>
+            ))}
+          </div>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '4rem 0', color: 'rgba(255, 255, 255, 0.5)' }}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '1.2rem' }}>No projects added yet.</p>
+          </div>
+        )}
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `

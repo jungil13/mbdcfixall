@@ -5,31 +5,31 @@ import { AnimatedSection } from './AnimatedSection'
 const reasons = [
   {
     icon: ShieldCheck,
-    title: 'Licensed & Insured',
+    title: 'Licensed & Registered Company',
     description:
       'PCAB-licensed, DOLE-registered, and fully insured. We meet every regulatory requirement before breaking ground.',
   },
   {
     icon: Clock,
-    title: 'On-Time Delivery',
+    title: 'After Sales',
     description:
       '96% of our projects are delivered on or before schedule. We use rigorous project management and milestone tracking.',
   },
   {
     icon: Award,
-    title: 'Award-Winning Work',
+    title: 'Warranty',
     description:
       'Multiple CCCI and PICPA recognition awards for construction excellence and business integrity across Cebu.',
   },
   {
     icon: Users,
-    title: 'In-House Expertise',
+    title: 'Team of Experts',
     description:
       'Our team of 120+ includes licensed civil engineers, architects, MEP specialists, and master tradespersons.',
   },
   {
     icon: FileCheck,
-    title: 'Transparent Reporting',
+    title: 'Transparent to Customer',
     description:
       'Clients receive weekly progress reports, photo documentation, and open access to project financials.',
   },

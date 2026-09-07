@@ -25,7 +25,6 @@ const navItems = [
   { label: 'Blogs & News', href: '/admin/blogs', icon: FileText },
   { label: 'Services', href: '/admin/services', icon: Wrench },
   { label: 'Projects', href: '/admin/projects', icon: FileText },
-  { label: 'Team', href: '/admin/team', icon: Users },
 ]
 
 type Notification = {
