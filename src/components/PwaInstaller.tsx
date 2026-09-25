@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from "react";
 import {
-  Download,
   Share2,
   PlusSquare,
   X,
@@ -74,6 +73,12 @@ export default function PwaInstaller() {
     const handleCustomTrigger = () => openInstallFlow();
     window.addEventListener("trigger-pwa-install", handleCustomTrigger);
 
+    const handleSecurityTrigger = () => {
+      setActiveTab("security");
+      setShowModal(true);
+    };
+    window.addEventListener("trigger-pwa-security", handleSecurityTrigger);
+
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
@@ -81,6 +86,7 @@ export default function PwaInstaller() {
       );
       window.removeEventListener("pwa-prompt-ready", handlePromptReady);
       window.removeEventListener("trigger-pwa-install", handleCustomTrigger);
+      window.removeEventListener("trigger-pwa-security", handleSecurityTrigger);
     };
   }, []);
 
@@ -113,31 +119,13 @@ export default function PwaInstaller() {
           }
           setShowModal(false);
           setTimeout(() => setInstalled(false), 3000);
-        } else {
-          // If dismissed, also trigger auto-download of APK for convenience
-          triggerApkDownload();
         }
       });
     } else {
-      // Prompt not available: auto download APK and show guide
-      triggerApkDownload();
       setActiveTab("install");
       setShowModal(true);
     }
   }, [deferredPrompt]);
-
-  const triggerApkDownload = () => {
-    try {
-      const link = document.createElement("a");
-      link.href = "/MBDC FIX ALL.apk";
-      link.download = "MBDC FIX ALL.apk";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (e) {
-      console.error("APK auto-download error:", e);
-    }
-  };
 
   if (isStandalone) return null;
 
@@ -400,18 +388,6 @@ export default function PwaInstaller() {
                           </div>
                         </div>
                       ))}
-
-                      {/* Direct APK Download option */}
-                      <div className="pt-2">
-                        <a
-                          href="/MBDC FIX ALL.apk"
-                          download="MBDC FIX ALL.apk"
-                          className="w-full bg-[#E8A020]/15 hover:bg-[#E8A020]/25 text-[#E8A020] border border-[#E8A020]/40 font-barlow font-bold text-xs uppercase py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all no-underline"
-                        >
-                          <Download size={15} />
-                          Download APK File Directly (.apk)
-                        </a>
-                      </div>
                     </div>
                   )}
 

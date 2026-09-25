@@ -1,35 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
-import { ChevronDown, Download, Share2, CheckCircle2 } from "lucide-react";
+import { ChevronDown, Download, Share2 } from "lucide-react";
 
 export function Hero() {
-  const [isStandalone, setIsStandalone] = useState(false);
   const [isIos, setIsIos] = useState(false);
-  const [showInstalledToast, setShowInstalledToast] = useState(false);
 
   useEffect(() => {
-    const checkStandalone = () => {
-      const match =
-        window.matchMedia("(display-mode: standalone)").matches ||
-        (window.navigator as any).standalone === true;
-      setIsStandalone(match);
-    };
-    checkStandalone();
-
     const ua = window.navigator.userAgent.toLowerCase();
     const isIosDevice =
       /iphone|ipad|ipod/.test(ua) ||
-      (window.navigator.platform === "MacIntel" && window.navigator.maxTouchPoints > 1);
+      (window.navigator.platform === "MacIntel" &&
+        window.navigator.maxTouchPoints > 1);
     setIsIos(isIosDevice);
   }, []);
 
-  const handleDownload = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isStandalone) {
-      setShowInstalledToast(true);
-      setTimeout(() => setShowInstalledToast(false), 3000);
-      return;
-    }
+  const handlePwaInstall = () => {
     window.dispatchEvent(new CustomEvent("trigger-pwa-install"));
   };
 
@@ -67,7 +52,11 @@ export function Hero() {
           src="/hero-bg.png"
           alt="Professional home repair and construction work in Cebu"
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: "center center", transform: "scale(1.08)", transformOrigin: "center center" }}
+          style={{
+            objectPosition: "center center",
+            transform: "scale(1.08)",
+            transformOrigin: "center center",
+          }}
         />
       </picture>
 
@@ -92,7 +81,14 @@ export function Hero() {
           <div
             key={i}
             className="bubble"
-            style={{ left: b.l, width: b.s, height: b.s, background: b.bg, animationDuration: b.d, animationDelay: b.delay }}
+            style={{
+              left: b.l,
+              width: b.s,
+              height: b.s,
+              background: b.bg,
+              animationDuration: b.d,
+              animationDelay: b.delay,
+            }}
           />
         ))}
       </div>
@@ -102,7 +98,7 @@ export function Hero() {
 
       {/* ── TOP TEXT BLOCK (mobile: top-anchored, desktop: centered) ── */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-5 w-full pt-5 lg:pt-0">
-        <div className="max-w-[520px] lg:max-w-[44%]">
+        <div className="max-w-[560px] lg:max-w-[50%]">
           {/* Label */}
           <div
             className="inline-flex items-center gap-[10px] mb-3 lg:mb-5"
@@ -137,73 +133,65 @@ export function Hero() {
             className="hero-cta-row hidden lg:flex gap-4 flex-wrap mt-8"
             style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.62s" }}
           >
-            <button
-              type="button"
-              id="hero-download-btn"
-              onClick={handleDownload}
-              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-[#E8A020] text-[#111111] px-7 py-4 border-0 cursor-pointer inline-flex items-center gap-2 transition-all duration-200 hover:bg-[#F0B030] hover:-translate-y-[1px] active:scale-95 shadow-[0_4px_20px_rgba(232,160,32,0.35)]"
-            >
-              {isIos ? (
-                <>
-                  <Share2 size={18} className="text-[#111111]" />
-                  ADD TO HOME SCREEN
-                </>
-              ) : (
-                <>
-                  <Download size={18} className="text-[#111111]" />
-                  DOWNLOAD APP
-                </>
-              )}
-            </button>
             <a
               href="#contact"
               id="hero-start-project-btn"
               onClick={handleStartProject}
-              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-white px-7 py-4 no-underline inline-flex items-center border-2 border-white/50 transition-all duration-200 hover:border-[#E8A020] hover:text-[#E8A020] hover:-translate-y-[1px]"
+              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-[#E8A020] text-[#111111] px-7 py-4 no-underline inline-flex items-center transition-all duration-200 hover:bg-[#F0B030] hover:-translate-y-[1px] active:scale-95 shadow-[0_4px_20px_rgba(232,160,32,0.35)]"
             >
               START PROJECT
             </a>
+            <button
+              type="button"
+              id="hero-download-btn"
+              onClick={handlePwaInstall}
+              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-white px-7 py-4 border-2 border-white/50 cursor-pointer inline-flex items-center gap-2 transition-all duration-200 hover:border-[#E8A020] hover:text-[#E8A020] hover:-translate-y-[1px] active:scale-95 shadow-md"
+            >
+              {isIos ? (
+                <>
+                  <Share2 size={18} className="text-[#E8A020]" />
+                  ADD TO HOME SCREEN
+                </>
+              ) : (
+                <>
+                  <Download size={18} className="text-[#E8A020]" />
+                  DOWNLOAD APP
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
 
       {/* ── MOBILE-ONLY: CTAs pinned above the bottom navbar ── */}
       <div className="absolute bottom-[84px] left-0 right-0 px-5 flex gap-3 lg:hidden z-10">
-        <button
-          type="button"
-          id="hero-mobile-download-btn"
-          onClick={handleDownload}
-          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-[#E8A020] text-[#111111] px-4 py-[14px] border-0 cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-200 active:opacity-80 shadow-lg active:scale-95 whitespace-nowrap"
-        >
-          {isIos ? (
-            <>
-              <Share2 size={15} className="text-[#111111] shrink-0" />
-              ADD TO HOME
-            </>
-          ) : (
-            <>
-              <Download size={15} className="text-[#111111] shrink-0" />
-              DOWNLOAD APP
-            </>
-          )}
-        </button>
         <a
           href="#contact"
           id="hero-mobile-start-project-btn"
           onClick={handleStartProject}
-          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-black/40 backdrop-blur-sm text-white px-4 py-[14px] no-underline border-2 border-white/60 transition-all duration-200 active:opacity-80 shadow-lg"
+          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-[#E8A020] text-[#111111] px-4 py-[14px] no-underline transition-all duration-200 active:opacity-80 shadow-lg flex items-center justify-center active:scale-95"
         >
           START PROJECT
         </a>
+        <button
+          type="button"
+          id="hero-mobile-download-btn"
+          onClick={handlePwaInstall}
+          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-black/60 backdrop-blur-md text-white px-4 py-[14px] border-2 border-white/60 cursor-pointer transition-all duration-200 active:opacity-80 shadow-lg flex items-center justify-center gap-1.5 whitespace-nowrap active:scale-95"
+        >
+          {isIos ? (
+            <>
+              <Share2 size={15} className="text-[#E8A020] shrink-0" />
+              ADD TO HOME
+            </>
+          ) : (
+            <>
+              <Download size={15} className="text-[#E8A020] shrink-0" />
+              DOWNLOAD APP
+            </>
+          )}
+        </button>
       </div>
-
-      {/* Toast when user already opened in standalone PWA */}
-      {showInstalledToast && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[10000] bg-green-600 text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 text-sm font-bold">
-          <CheckCircle2 size={16} />
-          MBDC FIX ALL is already installed on your device!
-        </div>
-      )}
 
       {/* Scroll indicator — desktop only */}
       <button
@@ -218,3 +206,4 @@ export function Hero() {
     </section>
   );
 }
+
