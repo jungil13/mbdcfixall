@@ -113,7 +113,7 @@ export function Contact() {
                 margin: 0,
               }}
             >
-              LET&apos;S BUILD <span style={{ color: '#E8A020' }}>TOGETHER</span>
+              TELL US <span style={{ color: '#E8A020' }}>WHAT YOU NEED</span>
             </h2>
           </div>
         </AnimatedSection>

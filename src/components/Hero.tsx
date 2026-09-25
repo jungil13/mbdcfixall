@@ -146,7 +146,7 @@ export function Hero() {
               onClick={handleStartProject}
               className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-[#E8A020] text-[#111111] px-7 py-4 no-underline inline-flex items-center transition-all duration-200 hover:bg-[#F0B030] hover:-translate-y-[1px] active:scale-95 shadow-[0_4px_20px_rgba(232,160,32,0.35)]"
             >
-              START PROJECT
+              REQUEST A SERVICE
             </a>
             {!isStandalone && (
             <button
@@ -180,7 +180,7 @@ export function Hero() {
           onClick={handleStartProject}
           className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-[#E8A020] text-[#111111] px-4 py-[14px] no-underline transition-all duration-200 active:opacity-80 shadow-lg flex items-center justify-center active:scale-95"
         >
-          START PROJECT
+          REQUEST A SERVICE
         </a>
         {!isStandalone && (
         <button
