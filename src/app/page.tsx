@@ -53,13 +53,18 @@ export default async function Home() {
       <Navbar />
       
       <Hero />
-      <About />
-      <Services dynamicServices={services || []} />
-      <Stats />
-      <Projects dynamicProjects={projects || []} />
-      <Gallery dynamicGallery={gallery || []} />
-      <WhyUs />
-      {/* News and Announcements hidden as requested */}
+
+      {/* Desktop-only sections — hidden on mobile to keep focus on inquiry form */}
+      <div className="hidden md:block">
+        <About />
+        <Services dynamicServices={services || []} />
+        <Stats />
+        <Projects dynamicProjects={projects || []} />
+        <Gallery dynamicGallery={gallery || []} />
+        <WhyUs />
+        {/* News and Announcements hidden as requested */}
+      </div>
+
       <Contact />
       
       <Footer />

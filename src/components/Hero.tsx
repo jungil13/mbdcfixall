@@ -4,6 +4,7 @@ import { ChevronDown, Download, Share2 } from "lucide-react";
 
 export function Hero() {
   const [isIos, setIsIos] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
     const ua = window.navigator.userAgent.toLowerCase();
@@ -12,6 +13,12 @@ export function Hero() {
       (window.navigator.platform === "MacIntel" &&
         window.navigator.maxTouchPoints > 1);
     setIsIos(isIosDevice);
+
+    // Detect if already installed as PWA (standalone mode)
+    const standalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
+    setIsStandalone(standalone);
   }, []);
 
   const handlePwaInstall = () => {
@@ -141,6 +148,7 @@ export function Hero() {
             >
               START PROJECT
             </a>
+            {!isStandalone && (
             <button
               type="button"
               id="hero-download-btn"
@@ -159,6 +167,7 @@ export function Hero() {
                 </>
               )}
             </button>
+            )}
           </div>
         </div>
       </div>
@@ -173,6 +182,7 @@ export function Hero() {
         >
           START PROJECT
         </a>
+        {!isStandalone && (
         <button
           type="button"
           id="hero-mobile-download-btn"
@@ -191,6 +201,7 @@ export function Hero() {
             </>
           )}
         </button>
+        )}
       </div>
 
       {/* Scroll indicator — desktop only */}

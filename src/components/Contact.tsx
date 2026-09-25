@@ -71,7 +71,7 @@ export function Contact() {
       className="section-padded relative scroll-mt-10"
       style={{
         background: '#111111',
-        padding: '7rem 1.25rem',
+        padding: 'clamp(3rem, 8vw, 7rem) 1.25rem',
         borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
@@ -127,7 +127,8 @@ export function Contact() {
           }}
           className="contact-grid"
         >
-          {/* Contact Info */}
+          {/* Contact Info — hidden on mobile, visible on md+ */}
+          <div className="hidden md:block">
           <AnimatedSection variant="left">
             <div style={{ background: '#1A1A1A', padding: 'clamp(1.5rem, 5vw, 3rem)', height: '100%' }}>
               <h3
@@ -228,6 +229,7 @@ export function Contact() {
               </a>
             </div>
           </AnimatedSection>
+          </div>
 
           {/* Form */}
           <AnimatedSection variant="right" delay={150}>
