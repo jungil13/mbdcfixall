@@ -68,13 +68,14 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="section-padded"
+      className="section-padded relative scroll-mt-10"
       style={{
         background: '#111111',
         padding: '7rem 1.25rem',
         borderTop: '1px solid rgba(255,255,255,0.06)',
       }}
     >
+      <div id="inquiry" className="absolute -top-20 left-0 pointer-events-none" />
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header */}
         <AnimatedSection>
@@ -317,6 +318,7 @@ export function Contact() {
                 </div>
               ) : (
                 <form
+                  id="inquiry-form"
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
                 >

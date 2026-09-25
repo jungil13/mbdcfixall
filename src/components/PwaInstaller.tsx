@@ -7,15 +7,14 @@ import {
   PlusSquare,
   X,
   CheckCircle2,
-  ArrowDown,
   Shield,
   Wifi,
   Bell,
   Zap,
   Lock,
   Eye,
-  ChevronRight,
   Smartphone,
+  ArrowDown,
 } from "lucide-react";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -25,16 +24,12 @@ interface BeforeInstallPromptEvent extends Event {
 
 type ModalTab = "install" | "security";
 
-const DISMISSED_KEY = "pwa-banner-dismissed-v2";
-const INSTALL_DELAY_MS = 3500;
-
 export default function PwaInstaller() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [isIos, setIsIos] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
   const [activeTab, setActiveTab] = useState<ModalTab>("install");
   const [installed, setInstalled] = useState(false);
 
@@ -47,30 +42,34 @@ export default function PwaInstaller() {
     setIsStandalone(isInStandalone);
     if (isInStandalone) return;
 
-    const dismissed = sessionStorage.getItem(DISMISSED_KEY);
-    if (dismissed) return;
-
     const ua = window.navigator.userAgent.toLowerCase();
-    const isIosDevice = /iphone|ipad|ipod/.test(ua);
-    const isSafari = /safari/.test(ua) && !/chrome|fxios|crios/.test(ua);
+    const isIosDevice =
+      /iphone|ipad|ipod/.test(ua) ||
+      (window.navigator.platform === "MacIntel" && window.navigator.maxTouchPoints > 1);
     setIsIos(isIosDevice);
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(() => {});
     }
 
+    if (typeof window !== "undefined" && (window as any).__deferredPrompt) {
+      setDeferredPrompt((window as any).__deferredPrompt);
+    }
+
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
+      (window as any).__deferredPrompt = e as BeforeInstallPromptEvent;
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setTimeout(() => setShowBanner(true), INSTALL_DELAY_MS);
+    };
+
+    const handlePromptReady = () => {
+      if (typeof window !== "undefined" && (window as any).__deferredPrompt) {
+        setDeferredPrompt((window as any).__deferredPrompt);
+      }
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-
-    // iOS Safari — show banner after a short delay
-    if (isIosDevice && isSafari) {
-      setTimeout(() => setShowBanner(true), INSTALL_DELAY_MS);
-    }
+    window.addEventListener("pwa-prompt-ready", handlePromptReady);
 
     const handleCustomTrigger = () => openInstallFlow();
     window.addEventListener("trigger-pwa-install", handleCustomTrigger);
@@ -80,29 +79,64 @@ export default function PwaInstaller() {
         "beforeinstallprompt",
         handleBeforeInstallPrompt
       );
+      window.removeEventListener("pwa-prompt-ready", handlePromptReady);
       window.removeEventListener("trigger-pwa-install", handleCustomTrigger);
     };
   }, []);
 
   const openInstallFlow = useCallback(() => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((result) => {
+    const ua = typeof window !== "undefined" ? window.navigator.userAgent.toLowerCase() : "";
+    const isIosDevice =
+      /iphone|ipad|ipod/.test(ua) ||
+      (typeof window !== "undefined" &&
+        window.navigator.platform === "MacIntel" &&
+        window.navigator.maxTouchPoints > 1);
+
+    if (isIosDevice) {
+      setActiveTab("install");
+      setShowModal(true);
+      return;
+    }
+
+    const prompt =
+      deferredPrompt ||
+      (typeof window !== "undefined" && (window as any).__deferredPrompt);
+
+    if (prompt) {
+      prompt.prompt();
+      prompt.userChoice.then((result: { outcome: "accepted" | "dismissed" }) => {
         if (result.outcome === "accepted") {
           setInstalled(true);
           setDeferredPrompt(null);
-          setShowBanner(false);
+          if (typeof window !== "undefined") {
+            (window as any).__deferredPrompt = null;
+          }
+          setShowModal(false);
           setTimeout(() => setInstalled(false), 3000);
+        } else {
+          // If dismissed, also trigger auto-download of APK for convenience
+          triggerApkDownload();
         }
       });
     } else {
+      // Prompt not available: auto download APK and show guide
+      triggerApkDownload();
+      setActiveTab("install");
       setShowModal(true);
     }
   }, [deferredPrompt]);
 
-  const dismissBanner = () => {
-    setShowBanner(false);
-    sessionStorage.setItem(DISMISSED_KEY, "1");
+  const triggerApkDownload = () => {
+    try {
+      const link = document.createElement("a");
+      link.href = "/MBDC FIX ALL.apk";
+      link.download = "MBDC FIX ALL.apk";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      console.error("APK auto-download error:", e);
+    }
   };
 
   if (isStandalone) return null;
@@ -204,83 +238,6 @@ export default function PwaInstaller() {
         </div>
       )}
 
-      {/* ── Floating Banner ── */}
-      {showBanner && !showModal && (
-        <div className="fixed bottom-[76px] lg:bottom-6 left-3 right-3 sm:left-auto sm:right-5 sm:max-w-[340px] z-[9990]">
-          <div className="relative bg-[#111111] border border-[#E8A020]/60 rounded-2xl p-4 shadow-[0_20px_60px_rgba(0,0,0,0.85)] overflow-hidden">
-            {/* Glow line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E8A020] to-transparent" />
-
-            <div className="flex items-center gap-3">
-              <div className="relative shrink-0">
-                <div className="w-12 h-12 rounded-xl bg-black border border-[#E8A020]/40 flex items-center justify-center p-1.5">
-                  <img
-                    src="/mightyb_logo.png"
-                    alt="MBDC"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-[#111111]" />
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <p className="font-barlow font-bold text-white text-sm leading-tight">
-                  MBDC FIX ALL
-                </p>
-                <p className="font-dm text-zinc-400 text-xs mt-0.5 truncate">
-                  {isIos
-                    ? "Tap to add to Home Screen →"
-                    : "Install the app — faster & offline"}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-1.5 shrink-0">
-                <button
-                  id="pwa-banner-install-btn"
-                  onClick={openInstallFlow}
-                  className="bg-[#E8A020] hover:bg-[#f5b535] active:scale-95 text-black font-barlow font-bold text-xs uppercase px-3 py-2 rounded-lg flex items-center gap-1 transition-all"
-                >
-                  {isIos ? <Share2 size={13} /> : <Download size={13} />}
-                  {isIos ? "Add" : "Install"}
-                </button>
-                <button
-                  onClick={dismissBanner}
-                  className="text-zinc-500 hover:text-white p-1.5 rounded-lg hover:bg-zinc-800 transition-colors"
-                  aria-label="Dismiss"
-                >
-                  <X size={15} />
-                </button>
-              </div>
-            </div>
-
-            {/* Feature pills */}
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-zinc-800/60">
-              {[
-                { icon: <Wifi size={10} />, label: "Works offline" },
-                { icon: <Zap size={10} />, label: "Faster" },
-                { icon: <Shield size={10} />, label: "Secure" },
-              ].map((f) => (
-                <div
-                  key={f.label}
-                  className="flex items-center gap-1 text-[10px] text-zinc-500 bg-zinc-900 rounded-full px-2 py-0.5"
-                >
-                  <span className="text-[#E8A020]">{f.icon}</span>
-                  {f.label}
-                </div>
-              ))}
-              <button
-                onClick={() => {
-                  setShowModal(true);
-                  setActiveTab("security");
-                }}
-                className="ml-auto text-[10px] text-[#E8A020] hover:underline flex items-center gap-0.5"
-              >
-                Why safe? <ChevronRight size={10} />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ── Full Modal ── */}
       {showModal && (
@@ -443,6 +400,18 @@ export default function PwaInstaller() {
                           </div>
                         </div>
                       ))}
+
+                      {/* Direct APK Download option */}
+                      <div className="pt-2">
+                        <a
+                          href="/MBDC FIX ALL.apk"
+                          download="MBDC FIX ALL.apk"
+                          className="w-full bg-[#E8A020]/15 hover:bg-[#E8A020]/25 text-[#E8A020] border border-[#E8A020]/40 font-barlow font-bold text-xs uppercase py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all no-underline"
+                        >
+                          <Download size={15} />
+                          Download APK File Directly (.apk)
+                        </a>
+                      </div>
                     </div>
                   )}
 

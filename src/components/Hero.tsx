@@ -1,18 +1,58 @@
 "use client";
 import { useEffect, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Download, Share2, CheckCircle2 } from "lucide-react";
 
 export function Hero() {
-  const [isStandalone, setIsStandalone] = useState(true);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [isIos, setIsIos] = useState(false);
+  const [showInstalledToast, setShowInstalledToast] = useState(false);
 
   useEffect(() => {
     const checkStandalone = () => {
-      const match = window.matchMedia("(display-mode: standalone)").matches ||
+      const match =
+        window.matchMedia("(display-mode: standalone)").matches ||
         (window.navigator as any).standalone === true;
       setIsStandalone(match);
     };
     checkStandalone();
+
+    const ua = window.navigator.userAgent.toLowerCase();
+    const isIosDevice =
+      /iphone|ipad|ipod/.test(ua) ||
+      (window.navigator.platform === "MacIntel" && window.navigator.maxTouchPoints > 1);
+    setIsIos(isIosDevice);
   }, []);
+
+  const handleDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isStandalone) {
+      setShowInstalledToast(true);
+      setTimeout(() => setShowInstalledToast(false), 3000);
+      return;
+    }
+    window.dispatchEvent(new CustomEvent("trigger-pwa-install"));
+  };
+
+  const handleStartProject = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const contactSection =
+      document.getElementById("inquiry-form") ||
+      document.getElementById("inquiry") ||
+      document.getElementById("contact");
+
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+      try {
+        window.history.pushState(null, "", "#contact");
+      } catch {}
+      setTimeout(() => {
+        const firstInput = contactSection.querySelector(
+          "input:not([type='hidden']), textarea"
+        ) as HTMLInputElement | HTMLTextAreaElement | null;
+        firstInput?.focus();
+      }, 500);
+    }
+  };
 
   const scrollToAbout = () => {
     document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
@@ -97,25 +137,31 @@ export function Hero() {
             className="hero-cta-row hidden lg:flex gap-4 flex-wrap mt-8"
             style={{ animation: "fadeInUp 0.8s ease-out both", animationDelay: "0.62s" }}
           >
-            <a
-              href="#services"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-[#E8A020] text-[#111111] px-7 py-4 no-underline inline-block transition-all duration-200 hover:bg-[#F0B030] hover:-translate-y-[1px]"
+            <button
+              type="button"
+              id="hero-download-btn"
+              onClick={handleDownload}
+              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-[#E8A020] text-[#111111] px-7 py-4 border-0 cursor-pointer inline-flex items-center gap-2 transition-all duration-200 hover:bg-[#F0B030] hover:-translate-y-[1px] active:scale-95 shadow-[0_4px_20px_rgba(232,160,32,0.35)]"
             >
-              OUR SERVICES
-            </a>
+              {isIos ? (
+                <>
+                  <Share2 size={18} className="text-[#111111]" />
+                  ADD TO HOME SCREEN
+                </>
+              ) : (
+                <>
+                  <Download size={18} className="text-[#111111]" />
+                  DOWNLOAD APP
+                </>
+              )}
+            </button>
             <a
               href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-white px-7 py-4 no-underline inline-block border-2 border-white/50 transition-all duration-200 hover:border-[#E8A020] hover:text-[#E8A020]"
+              id="hero-start-project-btn"
+              onClick={handleStartProject}
+              className="font-barlow font-bold text-[clamp(13px,3vw,15px)] tracking-[0.12em] bg-transparent text-white px-7 py-4 no-underline inline-flex items-center border-2 border-white/50 transition-all duration-200 hover:border-[#E8A020] hover:text-[#E8A020] hover:-translate-y-[1px]"
             >
-              START YOUR PROJECT
+              START PROJECT
             </a>
           </div>
         </div>
@@ -123,27 +169,41 @@ export function Hero() {
 
       {/* ── MOBILE-ONLY: CTAs pinned above the bottom navbar ── */}
       <div className="absolute bottom-[84px] left-0 right-0 px-5 flex gap-3 lg:hidden z-10">
-        <a
-          href="#services"
-          onClick={(e) => {
-            e.preventDefault();
-            document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" });
-          }}
-          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-[#E8A020] text-[#111111] px-4 py-[14px] no-underline transition-all duration-200 active:opacity-80 shadow-lg"
+        <button
+          type="button"
+          id="hero-mobile-download-btn"
+          onClick={handleDownload}
+          className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-[#E8A020] text-[#111111] px-4 py-[14px] border-0 cursor-pointer flex items-center justify-center gap-1.5 transition-all duration-200 active:opacity-80 shadow-lg active:scale-95 whitespace-nowrap"
         >
-          OUR SERVICES
-        </a>
+          {isIos ? (
+            <>
+              <Share2 size={15} className="text-[#111111] shrink-0" />
+              ADD TO HOME
+            </>
+          ) : (
+            <>
+              <Download size={15} className="text-[#111111] shrink-0" />
+              DOWNLOAD APP
+            </>
+          )}
+        </button>
         <a
           href="#contact"
-          onClick={(e) => {
-            e.preventDefault();
-            document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-          }}
+          id="hero-mobile-start-project-btn"
+          onClick={handleStartProject}
           className="flex-1 text-center font-barlow font-bold text-[13px] tracking-[0.10em] bg-black/40 backdrop-blur-sm text-white px-4 py-[14px] no-underline border-2 border-white/60 transition-all duration-200 active:opacity-80 shadow-lg"
         >
           START PROJECT
         </a>
       </div>
+
+      {/* Toast when user already opened in standalone PWA */}
+      {showInstalledToast && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[10000] bg-green-600 text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 text-sm font-bold">
+          <CheckCircle2 size={16} />
+          MBDC FIX ALL is already installed on your device!
+        </div>
+      )}
 
       {/* Scroll indicator — desktop only */}
       <button

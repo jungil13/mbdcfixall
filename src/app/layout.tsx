@@ -112,6 +112,19 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
         {/* Pinned tab (Safari desktop) */}
         <link rel="mask-icon" href="/mightyb_logo.png" color="#E8A020" />
+        {/* Early PWA install event listener */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.__deferredPrompt = null;
+              window.addEventListener('beforeinstallprompt', function(e) {
+                e.preventDefault();
+                window.__deferredPrompt = e;
+                window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
+              });
+            `,
+          }}
+        />
       </head>
       <body>
         <AppSplashScreen />

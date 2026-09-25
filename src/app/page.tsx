@@ -59,7 +59,7 @@ export default async function Home() {
       <Projects dynamicProjects={projects || []} />
       <Gallery dynamicGallery={gallery || []} />
       <WhyUs />
-      <FeaturedBlogs blogs={blogs || []} />
+      {/* News and Announcements hidden as requested */}
       <Contact />
       
       <Footer />

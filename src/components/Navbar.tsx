@@ -9,7 +9,6 @@ const navLinks = [
   { label: 'Services', href: '#services' },
   { label: 'Projects', href: '#projects' },
   { label: 'Gallery', href: '#gallery' },
-  { label: 'News', href: '#blog' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -28,7 +27,7 @@ export function Navbar() {
 
       if (!isHomePage) return
 
-      const sections = ['contact', 'blog', 'gallery', 'projects', 'services', 'about']
+      const sections = ['contact', 'gallery', 'projects', 'services', 'about']
       let current = 'home'
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId)

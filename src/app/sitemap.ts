@@ -2,11 +2,11 @@ import { MetadataRoute } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { SITE_URL } from '@/lib/seo'
 
-// We create a fresh client here because sitemaps run at build/request time
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
+
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes: MetadataRoute.Sitemap = [
@@ -16,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 1,
     },
+  
     {
       url: `${SITE_URL}/gallery`,
       lastModified: new Date(),
